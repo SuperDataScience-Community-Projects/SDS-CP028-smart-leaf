@@ -17,9 +17,6 @@
 
 ## Notes
 
-- Training Samples: [Insert number after running the script, e.g., 10,414]
-- Validation Samples: [Insert number after running the script, e.g., 2,610]
-- Test Samples: [Insert number after running the script]
 - Class Folders: Confirmed in `split_dataset/train`, `split_dataset/val`, and `split_dataset/test` with no "Invalid" folder issues.
 - Check `class_distribution.png` for specific class imbalances (e.g., some classes may have zero samples).
 
@@ -57,7 +54,7 @@ To replicate the preprocessing steps, follow these instructions. Since the datas
     - Ensure the script uses the correct path to `temp_dataset` (e.g., `/home/yan/Documents/Git/SDS-CP028-smart-leaf/temp_dataset`).
     - Run from the project root:
       ```bash
-      cd /home/yan/Documents/Git/SDS-CP028-smart-leaf
+      cd /home/user/Documents/Git/SDS-CP028-smart-leaf
       python submissions/team-members/yan-cotta/data_preprocessing.py
       ```
     This splits the dataset into `split_dataset/train` (70%), `split_dataset/val` (15%), and `split_dataset/test` (15%).
@@ -69,4 +66,3 @@ pip install -r requirements.txt
 
 **Notes**:
 - If running scripts from a subdirectory, ensure paths are correctly set in `data_preprocessing.py` (e.g., use absolute paths).
-- Update sample counts in this README after running `data_preprocessing.py`.
