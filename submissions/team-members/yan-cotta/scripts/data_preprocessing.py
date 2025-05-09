@@ -27,9 +27,9 @@ SPLIT_RATIO = (0.7, 0.15, 0.15)  # train, val, test
 
 def setup_paths() -> tuple[Path, Path]:
     """Set up input and output paths for dataset processing."""
-    current_dir = Path(__file__).parent
-    input_path = current_dir / "dataset_organized"
-    output_path = current_dir / "split_dataset"
+    project_dir = Path(__file__).parent.parent  # Move up to project root from scripts/
+    input_path = project_dir / "dataset_organized"
+    output_path = project_dir / "split_dataset"
     
     if not input_path.exists():
         raise FileNotFoundError(f"Input directory not found: {input_path}")
