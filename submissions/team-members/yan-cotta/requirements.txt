@@ -7,3 +7,7 @@ numpy
 split-folders
 torch
 torchvision
+scikit-learn 
+imbalanced-learn
+pandas
+seaborn

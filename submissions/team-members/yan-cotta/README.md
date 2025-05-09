@@ -51,18 +51,37 @@ To replicate the preprocessing steps, follow these instructions. Since the datas
 
 4. **Split the Dataset**:
     - Remove non-class folders if present (e.g., `rm -r dataset/Invalid` or `rm dataset/Info.txt`).
-    - Ensure the script uses the correct path to `temp_dataset` (e.g., `/home/yan/Documents/Git/SDS-CP028-smart-leaf/temp_dataset`).
     - Run from the project root:
       ```bash
-      cd /home/user/Documents/Git/SDS-CP028-smart-leaf
       python submissions/team-members/yan-cotta/data_preprocessing.py
       ```
     This splits the dataset into `split_dataset/train` (70%), `split_dataset/val` (15%), and `split_dataset/test` (15%).
 
+5. **Evaluate Model Performance**:
+    ```bash
+    python model_evaluation.py
+    ```
+    This script performs:
+    - 5-fold cross-validation
+    - Computation of precision, recall, F1-score, and AUC-ROC metrics
+    - Class imbalance analysis
+    - Generation of confusion matrices and performance visualizations
+    
+    Outputs:
+    - `confusion_matrix_fold_*.png`: Confusion matrix for each fold
+    - `class_metrics.png`: Bar plot of precision, recall, and F1-score per class
+    - `class_performance_metrics.csv`: Detailed metrics for each class
+
 ### Prerequisites
+
+Install the required packages:
 ```bash
 pip install -r requirements.txt
 ```
 
-**Notes**:
-- If running scripts from a subdirectory, ensure paths are correctly set in `data_preprocessing.py` (e.g., use absolute paths).
+The requirements include:
+- scikit-learn: For model evaluation metrics and cross-validation
+- torch & torchvision: For the deep learning model
+- numpy & pandas: For data handling and analysis
+- matplotlib & seaborn: For visualization
+- imbalanced-learn: For handling class imbalance
