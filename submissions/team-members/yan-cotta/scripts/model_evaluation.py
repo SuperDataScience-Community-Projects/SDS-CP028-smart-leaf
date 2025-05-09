@@ -4,6 +4,7 @@ Performs k-fold cross-validation and generates detailed performance metrics.
 """
 
 import os
+import sys
 import logging
 from pathlib import Path
 import numpy as np
@@ -16,6 +17,9 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, SubsetRandomSampler
 from torchvision import datasets
+
+# Add project root to sys.path
+sys.path.append(str(Path(__file__).parent.parent))
 from utils.data_utils import get_transforms, compute_class_weights
 
 # Set up logging
