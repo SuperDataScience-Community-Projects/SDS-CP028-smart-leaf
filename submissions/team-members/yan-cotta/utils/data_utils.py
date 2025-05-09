@@ -1,9 +1,18 @@
+"""
+Utility functions for data processing and visualization in the Smart Leaf project.
+"""
+
 import os
 import shutil
-from typing import Dict, List, Tuple
+from pathlib import Path
+from typing import Dict, List, Tuple, Union
 import matplotlib.pyplot as plt
+import numpy as np
 import torch
 from torchvision import transforms
+from PIL import Image
+from sklearn.metrics import precision_recall_fscore_support, roc_auc_score
+import pandas as pd
 
 def get_transforms(img_size: Tuple[int, int] = (224, 224)) -> Dict[str, transforms.Compose]:
     """Get data transforms for training and validation/testing.
@@ -77,3 +86,85 @@ def compute_class_weights(dataset) -> torch.Tensor:
     class_counts = torch.bincount(targets)
     total_samples = len(targets)
     return total_samples / (len(class_counts) * class_counts.float())
+
+def compute_fold_metrics(predictions: np.ndarray, true_labels: np.ndarray, class_names: List[str]) -> Dict:
+    """Compute performance metrics for a single fold.
+    
+    Args:
+        predictions: Array of predicted labels
+        true_labels: Array of true labels
+        class_names: List of class names
+        
+    Returns:
+        Dictionary containing precision, recall, f1, and ROC-AUC scores
+    """
+    precision, recall, f1, _ = precision_recall_fscore_support(
+        true_labels, predictions, average=None
+    )
+    
+    # Compute ROC-AUC for each class (one-vs-rest)
+    roc_auc = []
+    for class_idx in range(len(class_names)):
+        try:
+            roc_auc.append(roc_auc_score(
+                (true_labels == class_idx).astype(int),
+                (predictions == class_idx).astype(int)
+            ))
+        except:
+            roc_auc.append(np.nan)
+    
+    return {
+        'precision': precision.tolist(),
+        'recall': recall.tolist(),
+        'f1': f1.tolist(),
+        'roc_auc': roc_auc
+    }
+
+def save_metrics(metrics: List[Dict], output_path: Path) -> None:
+    """Save evaluation metrics to JSON file.
+    
+    Args:
+        metrics: List of metric dictionaries from each fold
+        output_path: Path to save the metrics file
+    """
+    import json
+    
+    with open(output_path, 'w') as f:
+        json.dump(metrics, f, indent=4)
+
+def plot_aggregated_metrics(metrics: List[Dict], output_dir: Path) -> None:
+    """Plot aggregated metrics across all folds.
+    
+    Args:
+        metrics: List of metric dictionaries from each fold
+        output_dir: Directory to save the plots
+    """
+    # Convert metrics to DataFrame for easier plotting
+    fold_data = pd.DataFrame(metrics)
+    
+    # Plot metrics over folds
+    plt.figure(figsize=(10, 6))
+    plt.plot(fold_data['fold'], fold_data['val_loss'], marker='o')
+    plt.xlabel('Fold')
+    plt.ylabel('Validation Loss')
+    plt.title('Validation Loss Across Folds')
+    plt.savefig(output_dir / 'loss_across_folds.png')
+    plt.close()
+    
+    # Plot average metrics by class
+    avg_metrics = {
+        'precision': np.mean([m['precision'] for m in metrics], axis=0),
+        'recall': np.mean([m['recall'] for m in metrics], axis=0),
+        'f1': np.mean([m['f1'] for m in metrics], axis=0),
+        'roc_auc': np.mean([m['roc_auc'] for m in metrics], axis=0)
+    }
+    
+    metrics_df = pd.DataFrame(avg_metrics)
+    metrics_df.plot(kind='bar', figsize=(15, 6))
+    plt.title('Average Performance Metrics by Class')
+    plt.xlabel('Class')
+    plt.ylabel('Score')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig(output_dir / 'avg_class_metrics.png')
+    plt.close()
