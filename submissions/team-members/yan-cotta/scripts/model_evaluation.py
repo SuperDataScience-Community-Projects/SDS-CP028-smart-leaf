@@ -1,3 +1,11 @@
+"""
+Model evaluation script for the Smart Leaf Disease Classification project.
+Performs k-fold cross-validation and generates detailed performance metrics.
+"""
+
+import os
+import logging
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -5,58 +13,165 @@ import seaborn as sns
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import precision_recall_fscore_support, roc_auc_score, confusion_matrix
 import torch
-from torch.utils.data import DataLoader, SubsetRandomSampler
-from torchvision import datasets, transforms
 import torch.nn as nn
+from torch.utils.data import DataLoader, SubsetRandomSampler
+from torchvision import datasets
+from utils.data_utils import get_transforms, compute_class_weights
+
+# Set up logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
+# Constants
+RANDOM_SEED = 42
+IMG_SIZE = (224, 224)
+BATCH_SIZE = 32
+NUM_WORKERS = min(os.cpu_count() or 1, 8)
+NUM_FOLDS = 5
 
 # Set random seeds for reproducibility
-RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)
 torch.manual_seed(RANDOM_SEED)
 if torch.cuda.is_available():
     torch.cuda.manual_seed(RANDOM_SEED)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
 
-# Define data transforms
-transform = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-])
-
-def load_data(data_dir):
-    """Load the dataset and prepare for k-fold cross-validation"""
-    dataset = datasets.ImageFolder(data_dir, transform=transform)
+def load_data(data_dir: Path) -> datasets.ImageFolder:
+    """
+    Load the dataset and prepare for k-fold cross-validation.
+    
+    Args:
+        data_dir: Path to the data directory
+        
+    Returns:
+        ImageFolder dataset
+        
+    Raises:
+        FileNotFoundError: If data directory doesn't exist
+    """
+    if not data_dir.exists():
+        raise FileNotFoundError(f"Data directory not found: {data_dir}")
+        
+    transforms = get_transforms(img_size=IMG_SIZE)
+    dataset = datasets.ImageFolder(data_dir, transform=transforms['val'])
+    logging.info(f"Loaded dataset from {data_dir} with {len(dataset)} samples")
+    
     return dataset
 
-def compute_class_weights(dataset):
-    """Compute class weights to handle class imbalance"""
-    targets = torch.tensor([label for _, label in dataset])
-    class_counts = torch.bincount(targets)
-    total_samples = len(targets)
-    class_weights = total_samples / (len(class_counts) * class_counts.float())
-    return class_weights
-
-def evaluate_fold(model, dataloader, criterion, device):
-    """Evaluate model on a single fold"""
+def evaluate_fold(
+    model: nn.Module,
+    dataloader: DataLoader,
+    criterion: nn.Module,
+    device: torch.device
+) -> tuple[float, np.ndarray, np.ndarray]:
+    """
+    Evaluate model on a single fold.
+    
+    Args:
+        model: PyTorch model to evaluate
+        dataloader: DataLoader for the evaluation data
+        criterion: Loss function
+        device: Device to run evaluation on
+        
+    Returns:
+        Tuple of (average loss, predicted labels, true labels)
+    """
     model.eval()
     predictions = []
     true_labels = []
     running_loss = 0.0
+    total_samples = 0
     
     with torch.no_grad():
         for inputs, labels in dataloader:
             inputs = inputs.to(device)
             labels = labels.to(device)
+            batch_size = labels.size(0)
             
-            outputs = model(inputs)
-            loss = criterion(outputs, labels)
-            running_loss += loss.item()
+            try:
+                outputs = model(inputs)
+                loss = criterion(outputs, labels)
+                
+                running_loss += loss.item() * batch_size
+                total_samples += batch_size
+                
+                _, predicted = torch.max(outputs, 1)
+                predictions.extend(predicted.cpu().numpy())
+                true_labels.extend(labels.cpu().numpy())
             
-            _, predicted = torch.max(outputs, 1)
-            predictions.extend(predicted.cpu().numpy())
-            true_labels.extend(labels.cpu().numpy())
+            except RuntimeError as e:
+                logging.error(f"Error during evaluation: {str(e)}")
+                continue
     
-    return np.array(predictions), np.array(true_labels), running_loss / len(dataloader)
+    avg_loss = running_loss / total_samples if total_samples > 0 else float('inf')
+    predictions = np.array(predictions)
+    true_labels = np.array(true_labels)
+    
+    return avg_loss, predictions, true_labels
+
+class LeafDiseaseClassifier(nn.Module):
+    """CNN model for leaf disease classification."""
+    def __init__(self, num_classes: int):
+        super().__init__()
+        # ResNet-like architecture
+        self.features = nn.Sequential(
+            # Initial convolution block
+            nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3),
+            nn.BatchNorm2d(64),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=3, stride=2, padding=1),
+            
+            # Residual blocks
+            self._make_layer(64, 64, 2),
+            self._make_layer(64, 128, 2, stride=2),
+            self._make_layer(128, 256, 2, stride=2),
+            self._make_layer(256, 512, 2, stride=2),
+            
+            # Global average pooling
+            nn.AdaptiveAvgPool2d((1, 1))
+        )
+        
+        # Classifier
+        self.classifier = nn.Sequential(
+            nn.Dropout(0.5),
+            nn.Linear(512, num_classes)
+        )
+        
+        # Initialize weights
+        self._initialize_weights()
+    
+    def _make_layer(self, in_channels: int, out_channels: int, blocks: int, stride: int = 1) -> nn.Sequential:
+        layers = []
+        layers.append(nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=stride, padding=1, bias=False))
+        layers.append(nn.BatchNorm2d(out_channels))
+        layers.append(nn.ReLU(inplace=True))
+        
+        for _ in range(1, blocks):
+            layers.append(nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1, padding=1, bias=False))
+            layers.append(nn.BatchNorm2d(out_channels))
+            layers.append(nn.ReLU(inplace=True))
+            
+        return nn.Sequential(*layers)
+    
+    def _initialize_weights(self) -> None:
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight, 0, 0.01)
+                nn.init.constant_(m.bias, 0)
+    
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = self.features(x)
+        x = torch.flatten(x, 1)
+        x = self.classifier(x)
+        return x
 
 def plot_confusion_matrix(cm, classes, fold):
     """Plot confusion matrix for a fold"""
@@ -85,99 +200,143 @@ def identify_problematic_classes(metrics_df, threshold=0.7):
     poor_performance = metrics_df[metrics_df['F1-score'] < threshold]
     return poor_performance
 
-def main():
-    # Initialize variables for cross-validation
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    dataset = load_data('split_dataset/train')  # Using training set for cross-validation
-    n_splits = 5
-    skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=RANDOM_SEED)
+def compute_fold_metrics(predictions, true_labels, class_names):
+    """Compute metrics for a single fold"""
+    precision, recall, f1, _ = precision_recall_fscore_support(true_labels, predictions, average=None)
     
-    # Prepare arrays to store metrics
-    fold_metrics = []
-    class_names = dataset.classes
-    n_classes = len(class_names)
+    # Compute ROC-AUC score for each class (one-vs-rest)
+    roc_auc = []
+    for class_idx in range(len(class_names)):
+        true_binary = (true_labels == class_idx).astype(int)
+        pred_binary = (predictions == class_idx).astype(int)
+        try:
+            roc_auc.append(roc_auc_score(true_binary, pred_binary))
+        except:
+            roc_auc.append(np.nan)
     
-    # Compute class weights for handling imbalance
-    class_weights = compute_class_weights(dataset)
-    
-    labels = [label for _, label in dataset]
-    for fold, (train_idx, val_idx) in enumerate(skf.split(np.zeros(len(labels)), labels)):
-        print(f"\nFold {fold + 1}/{n_splits}")
-        
-        # Create data loaders for this fold
-        train_sampler = SubsetRandomSampler(train_idx)
-        val_sampler = SubsetRandomSampler(val_idx)
-        
-        train_loader = DataLoader(dataset, batch_size=32, sampler=train_sampler)
-        val_loader = DataLoader(dataset, batch_size=32, sampler=val_sampler)
-        
-        # Initialize model and training components
-        model = YourModel()  # Replace with your model architecture
-        model = model.to(device)
-        criterion = nn.CrossEntropyLoss(weight=class_weights.to(device))
-        
-        # Evaluate the model
-        predictions, true_labels, val_loss = evaluate_fold(model, val_loader, criterion, device)
-        
-        # Compute metrics
-        precision, recall, f1, _ = precision_recall_fscore_support(true_labels, predictions, average=None)
-        
-        # Compute ROC-AUC score for each class (one-vs-rest)
-        roc_auc = []
-        for class_idx in range(n_classes):
-            true_binary = (true_labels == class_idx).astype(int)
-            pred_binary = (predictions == class_idx).astype(int)
-            try:
-                roc_auc.append(roc_auc_score(true_binary, pred_binary))
-            except:
-                roc_auc.append(np.nan)
-        
-        # Store metrics for this fold
-        fold_metrics.append({
-            'fold': fold + 1,
-            'precision': precision,
-            'recall': recall,
-            'f1': f1,
-            'roc_auc': roc_auc
-        })
-        
-        # Plot confusion matrix for this fold
-        cm = confusion_matrix(true_labels, predictions)
-        plot_confusion_matrix(cm, class_names, fold + 1)
-    
-    # Aggregate metrics across folds
-    avg_precision = np.mean([m['precision'] for m in fold_metrics], axis=0)
-    avg_recall = np.mean([m['recall'] for m in fold_metrics], axis=0)
-    avg_f1 = np.mean([m['f1'] for m in fold_metrics], axis=0)
-    avg_roc_auc = np.mean([m['roc_auc'] for m in fold_metrics], axis=0)
-    
-    # Create DataFrame with class-wise metrics
-    metrics_df = pd.DataFrame({
-        'Class': class_names,
-        'Precision': avg_precision,
-        'Recall': avg_recall,
-        'F1-score': avg_f1,
-        'ROC-AUC': avg_roc_auc
-    })
-    
-    # Plot class-wise metrics
-    plot_class_metrics(metrics_df.set_index('Class'))
-    
-    # Identify problematic classes
-    poor_performance = identify_problematic_classes(metrics_df)
-    if not poor_performance.empty:
-        print("\nClasses requiring attention (F1-score < 0.7):")
-        print(poor_performance.to_string())
-    
-    # Save metrics to CSV
-    metrics_df.to_csv('class_performance_metrics.csv', index=False)
-    
-    # Print overall metrics
-    print("\nOverall Performance Metrics:")
-    print(f"Average Precision: {avg_precision.mean():.3f}")
-    print(f"Average Recall: {avg_recall.mean():.3f}")
-    print(f"Average F1-score: {avg_f1.mean():.3f}")
-    print(f"Average ROC-AUC: {avg_roc_auc.mean():.3f}")
+    return {
+        'precision': precision,
+        'recall': recall,
+        'f1': f1,
+        'roc_auc': roc_auc
+    }
 
-if __name__ == '__main__':
+def save_metrics(fold_metrics, file_path):
+    """Save metrics to a JSON file"""
+    import json
+    with open(file_path, 'w') as f:
+        json.dump(fold_metrics, f)
+
+def plot_aggregated_metrics(fold_metrics, output_dir):
+    """Plot aggregated metrics across folds"""
+    avg_metrics = {}
+    for key in fold_metrics[0].keys():
+        if key != 'fold':
+            avg_metrics[key] = np.mean([fm[key] for fm in fold_metrics], axis=0)
+    
+    # Create DataFrame for plotting
+    metrics_df = pd.DataFrame(avg_metrics)
+    metrics_df['Class'] = output_dir.classes
+    
+    # Plot
+    plt.figure(figsize=(15, 8))
+    metrics_df.set_index('Class').plot(kind='bar')
+    plt.title('Average Performance Metrics by Class Across Folds')
+    plt.xlabel('Class')
+    plt.ylabel('Score')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig(output_dir / 'aggregated_class_metrics.png')
+    plt.close()
+
+def main():
+    """Run model evaluation with k-fold cross validation."""
+    try:
+        # Set device
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        logging.info(f"Using device: {device}")
+        
+        # Load dataset
+        script_dir = Path(__file__).parent
+        data_dir = script_dir.parent / "dataset_organized"
+        dataset = load_data(data_dir)
+        n_classes = len(dataset.classes)
+        
+        # Initialize k-fold cross validation
+        skf = StratifiedKFold(n_splits=NUM_FOLDS, shuffle=True, random_state=RANDOM_SEED)
+        fold_metrics = []
+        
+        # Get class weights for handling imbalance
+        class_weights = compute_class_weights(dataset).to(device)
+        
+        labels = [label for _, label in dataset]
+        for fold, (train_idx, val_idx) in enumerate(skf.split(np.zeros(len(labels)), labels)):
+            logging.info(f"\nProcessing fold {fold + 1}/{NUM_FOLDS}")
+            
+            # Create data loaders
+            train_sampler = SubsetRandomSampler(train_idx)
+            val_sampler = SubsetRandomSampler(val_idx)
+            
+            train_loader = DataLoader(
+                dataset, 
+                batch_size=BATCH_SIZE,
+                sampler=train_sampler,
+                num_workers=NUM_WORKERS
+            )
+            val_loader = DataLoader(
+                dataset,
+                batch_size=BATCH_SIZE,
+                sampler=val_sampler,
+                num_workers=NUM_WORKERS
+            )
+            
+            # Initialize model
+            model = LeafDiseaseClassifier(num_classes=n_classes).to(device)
+            criterion = nn.CrossEntropyLoss(weight=class_weights)
+            
+            # Evaluate fold
+            val_loss, predictions, true_labels = evaluate_fold(
+                model, val_loader, criterion, device
+            )
+            
+            # Compute metrics
+            metrics = compute_fold_metrics(predictions, true_labels, dataset.classes)
+            metrics['fold'] = fold + 1
+            metrics['val_loss'] = val_loss
+            fold_metrics.append(metrics)
+            
+            # Plot confusion matrix
+            plot_confusion_matrix(
+                predictions,
+                true_labels,
+                dataset.classes,
+                fold + 1,
+                save_dir=script_dir / "outputs"
+            )
+        
+        # Aggregate and save results
+        save_metrics(fold_metrics, script_dir / "outputs" / "evaluation_results.json")
+        plot_aggregated_metrics(fold_metrics, script_dir / "outputs")
+        
+        logging.info("\nEvaluation completed successfully!")
+        
+    except Exception as e:
+        logging.error(f"Error during evaluation: {str(e)}")
+        raise
+
+if __name__ == "__main__":
+    # Create output directory
+    output_dir = Path(__file__).parent / "outputs"
+    output_dir.mkdir(exist_ok=True)
+    
+    # Setup logging to file
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler(output_dir / "evaluation.log"),
+            logging.StreamHandler()
+        ]
+    )
+    
     main()
