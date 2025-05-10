@@ -10,7 +10,12 @@ Baseline Performance (Step 2)
   - Confusion matrices show misclassifications, especially among rice classes.
 - Visualizations:
   - Generated aggregated_class_metrics.png to visualize class-wise performance.
-- Next Steps:
-  - Address class imbalance with oversampling (Step 3).
-  - Enhance data augmentation (Step 4).
-  - Tune hyperparameters (Step 5).
+
+
+  Step 3: Oversampling and Hyperparameter Tuning
+- Initial oversampling (SMOTE) reduced F1 to 0.6365 and increased validation loss to 2.7789, indicating overfitting.
+- Hyperparameter tuning tested lr=[0.01, 0.001, 0.0001], dropout=[0.7, 0.5, 0.3], batch_size=[16, 32].
+- Best tuned result (lr=0.001, dropout=0.5, batch_size=32): F1 = 0.6333.
+- Final refinement: lr=0.001, dropout=0.3, batch_size=32, epochs=10, class weights instead of oversampling.
+- Result: [Insert F1 and validation loss from your run here].
+- Conclusion: [e.g., Improved stability, F1 approaching baseline, etc.].
