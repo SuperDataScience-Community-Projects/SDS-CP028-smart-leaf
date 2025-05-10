@@ -1,0 +1,297 @@
+2025-05-10 07:29:24,741 - INFO - Using device: cpu
+2025-05-10 07:29:24,770 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-10 07:32:27,466 - INFO - 
+Processing fold 1/5
+2025-05-10 07:32:27,495 - INFO - Starting epoch 1/3 for fold 1
+2025-05-10 07:35:01,037 - INFO - Fold 1, Epoch 1/3, Train Loss: 0.9063
+2025-05-10 07:35:01,038 - INFO - Starting epoch 2/3 for fold 1
+2025-05-10 07:37:33,288 - INFO - Fold 1, Epoch 2/3, Train Loss: 0.6081
+2025-05-10 07:37:33,288 - INFO - Starting epoch 3/3 for fold 1
+2025-05-10 07:40:06,005 - INFO - Fold 1, Epoch 3/3, Train Loss: 0.5101
+2025-05-10 07:40:06,006 - INFO - Evaluating fold 1
+2025-05-10 07:40:20,568 - INFO - Fold 1, Validation Loss: 0.4551
+2025-05-10 07:40:20,928 - INFO - 
+Processing fold 2/5
+2025-05-10 07:40:20,958 - INFO - Starting epoch 1/3 for fold 2
+2025-05-10 07:42:53,818 - INFO - Fold 2, Epoch 1/3, Train Loss: 0.8690
+2025-05-10 07:42:53,818 - INFO - Starting epoch 2/3 for fold 2
+2025-05-10 07:45:26,306 - INFO - Fold 2, Epoch 2/3, Train Loss: 0.5804
+2025-05-10 07:45:26,307 - INFO - Starting epoch 3/3 for fold 2
+2025-05-10 07:47:57,674 - INFO - Fold 2, Epoch 3/3, Train Loss: 0.4921
+2025-05-10 07:47:57,674 - INFO - Evaluating fold 2
+2025-05-10 07:48:12,703 - INFO - Fold 2, Validation Loss: 0.4585
+2025-05-10 07:48:12,914 - INFO - 
+Processing fold 3/5
+2025-05-10 07:48:12,944 - INFO - Starting epoch 1/3 for fold 3
+2025-05-10 07:50:50,937 - INFO - Fold 3, Epoch 1/3, Train Loss: 0.9015
+2025-05-10 07:50:50,937 - INFO - Starting epoch 2/3 for fold 3
+2025-05-10 07:53:28,067 - INFO - Fold 3, Epoch 2/3, Train Loss: 0.5986
+2025-05-10 07:53:28,067 - INFO - Starting epoch 3/3 for fold 3
+2025-05-10 07:56:04,998 - INFO - Fold 3, Epoch 3/3, Train Loss: 0.5129
+2025-05-10 07:56:04,998 - INFO - Evaluating fold 3
+2025-05-10 07:56:20,234 - INFO - Fold 3, Validation Loss: 0.5209
+2025-05-10 07:56:20,439 - INFO - 
+Processing fold 4/5
+2025-05-10 07:56:20,468 - INFO - Starting epoch 1/3 for fold 4
+2025-05-10 07:58:55,910 - INFO - Fold 4, Epoch 1/3, Train Loss: 0.8438
+2025-05-10 07:58:55,910 - INFO - Starting epoch 2/3 for fold 4
+2025-05-10 08:01:28,387 - INFO - Fold 4, Epoch 2/3, Train Loss: 0.5998
+2025-05-10 08:01:28,387 - INFO - Starting epoch 3/3 for fold 4
+2025-05-10 08:04:04,112 - INFO - Fold 4, Epoch 3/3, Train Loss: 0.4879
+2025-05-10 08:04:04,112 - INFO - Evaluating fold 4
+2025-05-10 08:04:21,615 - INFO - Fold 4, Validation Loss: 0.5074
+2025-05-10 08:04:21,955 - INFO - 
+Processing fold 5/5
+2025-05-10 08:04:21,986 - INFO - Starting epoch 1/3 for fold 5
+2025-05-10 08:06:57,766 - INFO - Fold 5, Epoch 1/3, Train Loss: 0.9055
+2025-05-10 08:06:57,766 - INFO - Starting epoch 2/3 for fold 5
+2025-05-10 08:09:37,735 - INFO - Fold 5, Epoch 2/3, Train Loss: 0.6116
+2025-05-10 08:09:37,735 - INFO - Starting epoch 3/3 for fold 5
+2025-05-10 08:12:13,818 - INFO - Fold 5, Epoch 3/3, Train Loss: 0.5148
+2025-05-10 08:12:13,818 - INFO - Evaluating fold 5
+2025-05-10 08:12:32,654 - INFO - Fold 5, Validation Loss: 0.4932
+2025-05-10 08:12:32,863 - ERROR - Error during evaluation: the resolved dtypes are not compatible with add.reduce. Resolved (dtype('<U27'), dtype('<U27'), dtype('<U54'))
+2025-05-10 08:28:01,718 - INFO - Using device: cpu
+2025-05-10 08:28:01,748 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-10 08:29:36,420 - INFO - 
+Processing fold 1/5
+2025-05-10 08:31:17,362 - INFO - Starting epoch 1/3 for fold 1
+2025-05-10 08:33:55,716 - INFO - Fold 1, Epoch 1/3, Train Loss: 0.8175
+2025-05-10 08:33:55,716 - INFO - Starting epoch 2/3 for fold 1
+2025-05-10 08:36:28,491 - INFO - Fold 1, Epoch 2/3, Train Loss: 0.5262
+2025-05-10 08:36:28,492 - INFO - Starting epoch 3/3 for fold 1
+2025-05-10 08:39:01,396 - INFO - Fold 1, Epoch 3/3, Train Loss: 0.4704
+2025-05-10 08:39:01,396 - INFO - Evaluating fold 1
+2025-05-10 08:39:16,760 - INFO - Fold 1, Validation Loss: 2.5884
+2025-05-10 08:39:17,105 - INFO - 
+Processing fold 2/5
+2025-05-10 08:40:28,857 - INFO - Starting epoch 1/3 for fold 2
+2025-05-10 08:43:01,499 - INFO - Fold 2, Epoch 1/3, Train Loss: 0.8135
+2025-05-10 08:43:01,499 - INFO - Starting epoch 2/3 for fold 2
+2025-05-10 08:45:36,996 - INFO - Fold 2, Epoch 2/3, Train Loss: 0.5393
+2025-05-10 08:45:36,996 - INFO - Starting epoch 3/3 for fold 2
+2025-05-10 08:48:10,473 - INFO - Fold 2, Epoch 3/3, Train Loss: 0.4436
+2025-05-10 08:48:10,473 - INFO - Evaluating fold 2
+2025-05-10 08:48:27,931 - INFO - Fold 2, Validation Loss: 3.0854
+2025-05-10 08:48:28,138 - INFO - 
+Processing fold 3/5
+2025-05-10 08:50:09,030 - INFO - Starting epoch 1/3 for fold 3
+2025-05-10 08:52:43,703 - INFO - Fold 3, Epoch 1/3, Train Loss: 0.7631
+2025-05-10 08:52:43,703 - INFO - Starting epoch 2/3 for fold 3
+2025-05-10 08:55:17,777 - INFO - Fold 3, Epoch 2/3, Train Loss: 0.5075
+2025-05-10 08:55:17,777 - INFO - Starting epoch 3/3 for fold 3
+2025-05-10 08:57:54,842 - INFO - Fold 3, Epoch 3/3, Train Loss: 0.4449
+2025-05-10 08:57:54,842 - INFO - Evaluating fold 3
+2025-05-10 08:58:10,474 - INFO - Fold 3, Validation Loss: 3.0468
+2025-05-10 08:58:10,694 - INFO - 
+Processing fold 4/5
+2025-05-10 08:59:21,653 - INFO - Starting epoch 1/3 for fold 4
+2025-05-10 09:01:53,166 - INFO - Fold 4, Epoch 1/3, Train Loss: 0.7891
+2025-05-10 09:01:53,166 - INFO - Starting epoch 2/3 for fold 4
+2025-05-10 09:04:27,413 - INFO - Fold 4, Epoch 2/3, Train Loss: 0.5076
+2025-05-10 09:04:27,413 - INFO - Starting epoch 3/3 for fold 4
+2025-05-10 09:07:07,805 - INFO - Fold 4, Epoch 3/3, Train Loss: 0.4568
+2025-05-10 09:07:07,805 - INFO - Evaluating fold 4
+2025-05-10 09:07:26,240 - INFO - Fold 4, Validation Loss: 2.6323
+2025-05-10 09:07:26,451 - INFO - 
+Processing fold 5/5
+2025-05-10 09:09:06,519 - INFO - Starting epoch 1/3 for fold 5
+2025-05-10 09:11:38,169 - INFO - Fold 5, Epoch 1/3, Train Loss: 0.7418
+2025-05-10 09:11:38,169 - INFO - Starting epoch 2/3 for fold 5
+2025-05-10 09:14:06,372 - INFO - Fold 5, Epoch 2/3, Train Loss: 0.5113
+2025-05-10 09:14:06,372 - INFO - Starting epoch 3/3 for fold 5
+2025-05-10 09:16:38,428 - INFO - Fold 5, Epoch 3/3, Train Loss: 0.4482
+2025-05-10 09:16:38,428 - INFO - Evaluating fold 5
+2025-05-10 09:16:57,097 - INFO - Fold 5, Validation Loss: 3.0201
+2025-05-10 09:16:57,448 - ERROR - Error during evaluation: name 'json' is not defined
+2025-05-10 09:20:56,794 - INFO - Using device: cpu
+2025-05-10 09:20:56,824 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-10 09:22:31,047 - INFO - 
+Processing fold 1/5
+2025-05-10 09:22:31,075 - INFO - Starting epoch 1/3 for fold 1
+2025-05-10 09:25:08,471 - INFO - Fold 1, Epoch 1/3, Train Loss: 0.6709
+2025-05-10 09:25:08,471 - INFO - Starting epoch 2/3 for fold 1
+2025-05-10 09:27:42,464 - INFO - Fold 1, Epoch 2/3, Train Loss: 0.4358
+2025-05-10 09:27:42,464 - INFO - Starting epoch 3/3 for fold 1
+2025-05-10 09:30:16,823 - INFO - Fold 1, Epoch 3/3, Train Loss: 0.3899
+2025-05-10 09:30:16,823 - INFO - Evaluating fold 1
+2025-05-10 09:30:32,069 - INFO - Fold 1, Validation Loss: 2.6507
+2025-05-10 09:30:32,400 - INFO - 
+Processing fold 2/5
+2025-05-10 09:30:32,431 - INFO - Starting epoch 1/3 for fold 2
+2025-05-10 09:33:06,202 - INFO - Fold 2, Epoch 1/3, Train Loss: 0.6471
+2025-05-10 09:33:06,202 - INFO - Starting epoch 2/3 for fold 2
+2025-05-10 09:35:43,002 - INFO - Fold 2, Epoch 2/3, Train Loss: 0.4362
+2025-05-10 09:35:43,002 - INFO - Starting epoch 3/3 for fold 2
+2025-05-10 09:38:21,986 - INFO - Fold 2, Epoch 3/3, Train Loss: 0.3617
+2025-05-10 09:38:21,986 - INFO - Evaluating fold 2
+2025-05-10 09:38:39,782 - INFO - Fold 2, Validation Loss: 2.5724
+2025-05-10 09:38:39,988 - INFO - 
+Processing fold 3/5
+2025-05-10 09:38:40,019 - INFO - Starting epoch 1/3 for fold 3
+2025-05-10 09:41:15,797 - INFO - Fold 3, Epoch 1/3, Train Loss: 0.6399
+2025-05-10 09:41:15,797 - INFO - Starting epoch 2/3 for fold 3
+2025-05-10 09:43:52,492 - INFO - Fold 3, Epoch 2/3, Train Loss: 0.4313
+2025-05-10 09:43:52,492 - INFO - Starting epoch 3/3 for fold 3
+2025-05-10 09:46:29,614 - INFO - Fold 3, Epoch 3/3, Train Loss: 0.3764
+2025-05-10 09:46:29,614 - INFO - Evaluating fold 3
+2025-05-10 09:46:44,899 - INFO - Fold 3, Validation Loss: 2.9730
+2025-05-10 09:46:45,104 - INFO - 
+Processing fold 4/5
+2025-05-10 09:46:45,135 - INFO - Starting epoch 1/3 for fold 4
+2025-05-10 09:49:23,346 - INFO - Fold 4, Epoch 1/3, Train Loss: 0.6578
+2025-05-10 09:49:23,346 - INFO - Starting epoch 2/3 for fold 4
+2025-05-10 09:51:58,937 - INFO - Fold 4, Epoch 2/3, Train Loss: 0.4370
+2025-05-10 09:51:58,937 - INFO - Starting epoch 3/3 for fold 4
+2025-05-10 09:54:36,104 - INFO - Fold 4, Epoch 3/3, Train Loss: 0.3715
+2025-05-10 09:54:36,104 - INFO - Evaluating fold 4
+2025-05-10 09:54:51,679 - INFO - Fold 4, Validation Loss: 2.7427
+2025-05-10 09:54:51,880 - INFO - 
+Processing fold 5/5
+2025-05-10 09:54:51,910 - INFO - Starting epoch 1/3 for fold 5
+2025-05-10 09:57:30,392 - INFO - Fold 5, Epoch 1/3, Train Loss: 0.6397
+2025-05-10 09:57:30,392 - INFO - Starting epoch 2/3 for fold 5
+2025-05-10 10:00:07,654 - INFO - Fold 5, Epoch 2/3, Train Loss: 0.4249
+2025-05-10 10:00:07,654 - INFO - Starting epoch 3/3 for fold 5
+2025-05-10 10:02:47,497 - INFO - Fold 5, Epoch 3/3, Train Loss: 0.3761
+2025-05-10 10:02:47,497 - INFO - Evaluating fold 5
+2025-05-10 10:03:05,805 - INFO - Fold 5, Validation Loss: 2.9557
+2025-05-10 10:03:06,296 - INFO - 
+Evaluation with oversampling completed successfully!
+2025-05-10 10:17:21,670 - INFO - Using device: cpu
+2025-05-10 10:17:21,700 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-10 10:19:17,415 - INFO - 
+Testing parameters: {'lr': 0.01, 'dropout': 0.7, 'batch_size': 16}
+2025-05-10 10:19:17,504 - INFO - Processing fold 1/5
+2025-05-10 10:22:05,979 - INFO - Fold 1, Epoch 1/5, Train Loss: 1.4831
+2025-05-10 10:24:50,935 - INFO - Fold 1, Epoch 2/5, Train Loss: 0.8383
+2025-05-10 10:27:34,949 - INFO - Fold 1, Epoch 3/5, Train Loss: 0.6690
+2025-05-10 10:30:18,545 - INFO - Fold 1, Epoch 4/5, Train Loss: 0.5825
+2025-05-10 10:33:02,680 - INFO - Fold 1, Epoch 5/5, Train Loss: 0.5364
+2025-05-10 10:33:19,049 - INFO - Processing fold 2/5
+2025-05-10 10:36:08,743 - INFO - Fold 2, Epoch 1/5, Train Loss: 1.2691
+2025-05-10 10:38:54,748 - INFO - Fold 2, Epoch 2/5, Train Loss: 0.7721
+2025-05-10 10:41:40,340 - INFO - Fold 2, Epoch 3/5, Train Loss: 0.6539
+2025-05-10 10:44:26,229 - INFO - Fold 2, Epoch 4/5, Train Loss: 0.5990
+2025-05-10 10:47:11,429 - INFO - Fold 2, Epoch 5/5, Train Loss: 0.5319
+2025-05-10 10:47:27,514 - INFO - Processing fold 3/5
+2025-05-10 10:50:12,942 - INFO - Fold 3, Epoch 1/5, Train Loss: 1.5404
+2025-05-10 10:52:58,517 - INFO - Fold 3, Epoch 2/5, Train Loss: 0.9098
+2025-05-10 10:55:45,064 - INFO - Fold 3, Epoch 3/5, Train Loss: 0.6928
+2025-05-10 10:58:30,536 - INFO - Fold 3, Epoch 4/5, Train Loss: 0.6014
+2025-05-10 11:01:16,149 - INFO - Fold 3, Epoch 5/5, Train Loss: 0.5618
+2025-05-10 11:01:32,043 - INFO - Processing fold 4/5
+2025-05-10 11:04:14,913 - INFO - Fold 4, Epoch 1/5, Train Loss: 1.3080
+2025-05-10 11:06:57,087 - INFO - Fold 4, Epoch 2/5, Train Loss: 0.8377
+2025-05-10 11:09:41,903 - INFO - Fold 4, Epoch 3/5, Train Loss: 0.6961
+2025-05-10 11:12:25,125 - INFO - Fold 4, Epoch 4/5, Train Loss: 0.5991
+2025-05-10 11:15:08,708 - INFO - Fold 4, Epoch 5/5, Train Loss: 0.5339
+2025-05-10 11:15:24,831 - INFO - Processing fold 5/5
+2025-05-10 11:18:13,156 - INFO - Fold 5, Epoch 1/5, Train Loss: 1.3942
+2025-05-10 11:20:57,540 - INFO - Fold 5, Epoch 2/5, Train Loss: 0.7990
+2025-05-10 11:23:42,019 - INFO - Fold 5, Epoch 3/5, Train Loss: 0.6411
+2025-05-10 11:26:25,267 - INFO - Fold 5, Epoch 4/5, Train Loss: 0.5726
+2025-05-10 11:29:11,289 - INFO - Fold 5, Epoch 5/5, Train Loss: 0.5249
+2025-05-10 11:29:27,364 - INFO - Average F1 score for parameters {'lr': 0.01, 'dropout': 0.7, 'batch_size': 16}: 0.5601
+2025-05-10 11:29:27,365 - INFO - 
+Testing parameters: {'lr': 0.001, 'dropout': 0.5, 'batch_size': 32}
+2025-05-10 11:29:27,453 - INFO - Processing fold 1/5
+2025-05-10 11:32:17,783 - INFO - Fold 1, Epoch 1/5, Train Loss: 0.7574
+2025-05-10 11:35:08,927 - INFO - Fold 1, Epoch 2/5, Train Loss: 0.4719
+2025-05-10 11:37:57,090 - INFO - Fold 1, Epoch 3/5, Train Loss: 0.4122
+2025-05-10 11:40:44,161 - INFO - Fold 1, Epoch 4/5, Train Loss: 0.3603
+2025-05-10 11:43:29,700 - INFO - Fold 1, Epoch 5/5, Train Loss: 0.3435
+2025-05-10 11:43:46,105 - INFO - Processing fold 2/5
+2025-05-10 11:46:34,054 - INFO - Fold 2, Epoch 1/5, Train Loss: 0.6863
+2025-05-10 11:49:22,786 - INFO - Fold 2, Epoch 2/5, Train Loss: 0.4494
+2025-05-10 11:52:08,268 - INFO - Fold 2, Epoch 3/5, Train Loss: 0.4153
+2025-05-10 11:54:54,455 - INFO - Fold 2, Epoch 4/5, Train Loss: 0.3470
+2025-05-10 11:57:41,516 - INFO - Fold 2, Epoch 5/5, Train Loss: 0.3334
+2025-05-10 11:57:57,985 - INFO - Processing fold 3/5
+2025-05-10 12:00:43,303 - INFO - Fold 3, Epoch 1/5, Train Loss: 0.7378
+2025-05-10 12:03:28,733 - INFO - Fold 3, Epoch 2/5, Train Loss: 0.4687
+2025-05-10 12:06:13,273 - INFO - Fold 3, Epoch 3/5, Train Loss: 0.4039
+2025-05-10 12:08:59,558 - INFO - Fold 3, Epoch 4/5, Train Loss: 0.3717
+2025-05-10 12:11:45,363 - INFO - Fold 3, Epoch 5/5, Train Loss: 0.3339
+2025-05-10 12:12:02,079 - INFO - Processing fold 4/5
+2025-05-10 12:14:46,750 - INFO - Fold 4, Epoch 1/5, Train Loss: 0.6917
+2025-05-10 12:17:32,793 - INFO - Fold 4, Epoch 2/5, Train Loss: 0.4590
+2025-05-10 12:20:17,676 - INFO - Fold 4, Epoch 3/5, Train Loss: 0.4167
+2025-05-10 12:23:03,105 - INFO - Fold 4, Epoch 4/5, Train Loss: 0.3553
+2025-05-10 12:25:48,419 - INFO - Fold 4, Epoch 5/5, Train Loss: 0.3352
+2025-05-10 12:26:05,061 - INFO - Processing fold 5/5
+2025-05-10 12:28:52,824 - INFO - Fold 5, Epoch 1/5, Train Loss: 0.7253
+2025-05-10 12:31:34,189 - INFO - Fold 5, Epoch 2/5, Train Loss: 0.4911
+2025-05-10 12:34:14,883 - INFO - Fold 5, Epoch 3/5, Train Loss: 0.4247
+2025-05-10 12:36:56,175 - INFO - Fold 5, Epoch 4/5, Train Loss: 0.3877
+2025-05-10 12:39:39,147 - INFO - Fold 5, Epoch 5/5, Train Loss: 0.3451
+2025-05-10 12:39:57,234 - INFO - Average F1 score for parameters {'lr': 0.001, 'dropout': 0.5, 'batch_size': 32}: 0.6333
+2025-05-10 12:39:57,234 - INFO - 
+Testing parameters: {'lr': 0.0001, 'dropout': 0.3, 'batch_size': 32}
+2025-05-10 12:39:57,325 - INFO - Processing fold 1/5
+2025-05-10 12:46:20,033 - INFO - Using device: cpu
+2025-05-10 12:46:20,063 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-10 12:48:13,946 - INFO - Class weights: tensor([0.7804, 1.8134, 0.8006, 0.9445, 0.9303, 6.1203, 0.9303, 1.5176, 0.6252,
+        0.9522, 0.9303, 1.0314, 0.8336, 1.0068])
+2025-05-10 12:50:16,650 - INFO - 
+Processing fold 1/5
+2025-05-10 12:53:08,480 - INFO - Fold 1, Epoch 1/10, Train Loss: 0.8564
+2025-05-10 12:55:58,222 - INFO - Fold 1, Epoch 2/10, Train Loss: 0.5528
+2025-05-10 12:58:46,082 - INFO - Fold 1, Epoch 3/10, Train Loss: 0.4582
+2025-05-10 13:01:35,327 - INFO - Fold 1, Epoch 4/10, Train Loss: 0.4601
+2025-05-10 13:04:23,426 - INFO - Fold 1, Epoch 5/10, Train Loss: 0.4077
+2025-05-10 13:07:11,135 - INFO - Fold 1, Epoch 6/10, Train Loss: 0.3722
+2025-05-10 13:09:59,574 - INFO - Fold 1, Epoch 7/10, Train Loss: 0.3427
+2025-05-10 13:12:47,220 - INFO - Fold 1, Epoch 8/10, Train Loss: 0.3512
+2025-05-10 13:15:35,673 - INFO - Fold 1, Epoch 9/10, Train Loss: 0.3275
+2025-05-10 13:18:22,673 - INFO - Fold 1, Epoch 10/10, Train Loss: 0.2971
+2025-05-10 13:18:39,498 - INFO - 
+Processing fold 2/5
+2025-05-10 13:21:27,049 - INFO - Fold 2, Epoch 1/10, Train Loss: 0.8532
+2025-05-10 13:24:15,603 - INFO - Fold 2, Epoch 2/10, Train Loss: 0.5573
+2025-05-10 13:27:04,967 - INFO - Fold 2, Epoch 3/10, Train Loss: 0.4693
+2025-05-10 13:29:56,913 - INFO - Fold 2, Epoch 4/10, Train Loss: 0.4405
+2025-05-10 13:32:46,703 - INFO - Fold 2, Epoch 5/10, Train Loss: 0.4058
+2025-05-10 13:35:34,795 - INFO - Fold 2, Epoch 6/10, Train Loss: 0.3485
+2025-05-10 13:38:20,058 - INFO - Fold 2, Epoch 7/10, Train Loss: 0.3450
+2025-05-10 13:41:04,819 - INFO - Fold 2, Epoch 8/10, Train Loss: 0.3657
+2025-05-10 13:43:53,578 - INFO - Fold 2, Epoch 9/10, Train Loss: 0.3154
+2025-05-10 13:46:41,990 - INFO - Fold 2, Epoch 10/10, Train Loss: 0.3103
+2025-05-10 13:46:58,929 - INFO - 
+Processing fold 3/5
+2025-05-10 13:49:47,898 - INFO - Fold 3, Epoch 1/10, Train Loss: 0.8933
+2025-05-10 13:52:37,358 - INFO - Fold 3, Epoch 2/10, Train Loss: 0.5739
+2025-05-10 13:55:24,836 - INFO - Fold 3, Epoch 3/10, Train Loss: 0.4813
+2025-05-10 13:58:11,632 - INFO - Fold 3, Epoch 4/10, Train Loss: 0.4245
+2025-05-10 14:01:00,786 - INFO - Fold 3, Epoch 5/10, Train Loss: 0.4211
+2025-05-10 14:03:48,800 - INFO - Fold 3, Epoch 6/10, Train Loss: 0.3767
+2025-05-10 14:06:36,246 - INFO - Fold 3, Epoch 7/10, Train Loss: 0.3607
+2025-05-10 14:09:24,373 - INFO - Fold 3, Epoch 8/10, Train Loss: 0.3431
+2025-05-10 14:12:12,913 - INFO - Fold 3, Epoch 9/10, Train Loss: 0.3547
+2025-05-10 14:15:00,698 - INFO - Fold 3, Epoch 10/10, Train Loss: 0.3264
+2025-05-10 14:15:19,003 - INFO - 
+Processing fold 4/5
+2025-05-10 14:18:07,775 - INFO - Fold 4, Epoch 1/10, Train Loss: 0.8845
+2025-05-10 14:20:56,825 - INFO - Fold 4, Epoch 2/10, Train Loss: 0.5616
+2025-05-10 14:23:44,700 - INFO - Fold 4, Epoch 3/10, Train Loss: 0.4798
+2025-05-10 14:26:32,732 - INFO - Fold 4, Epoch 4/10, Train Loss: 0.4444
+2025-05-10 14:29:20,543 - INFO - Fold 4, Epoch 5/10, Train Loss: 0.3993
+2025-05-10 14:32:10,201 - INFO - Fold 4, Epoch 6/10, Train Loss: 0.3883
+2025-05-10 14:34:59,846 - INFO - Fold 4, Epoch 7/10, Train Loss: 0.3491
+2025-05-10 14:37:49,549 - INFO - Fold 4, Epoch 8/10, Train Loss: 0.3409
+2025-05-10 14:40:37,652 - INFO - Fold 4, Epoch 9/10, Train Loss: 0.3409
+2025-05-10 14:43:24,781 - INFO - Fold 4, Epoch 10/10, Train Loss: 0.3171
+2025-05-10 14:43:41,476 - INFO - 
+Processing fold 5/5
+2025-05-10 14:46:31,313 - INFO - Fold 5, Epoch 1/10, Train Loss: 0.8613
+2025-05-10 14:49:22,837 - INFO - Fold 5, Epoch 2/10, Train Loss: 0.5723
+2025-05-10 14:52:10,745 - INFO - Fold 5, Epoch 3/10, Train Loss: 0.4822
+2025-05-10 14:54:59,630 - INFO - Fold 5, Epoch 4/10, Train Loss: 0.4371
+2025-05-10 14:57:45,461 - INFO - Fold 5, Epoch 5/10, Train Loss: 0.3980
+2025-05-10 15:00:32,901 - INFO - Fold 5, Epoch 6/10, Train Loss: 0.3706
+2025-05-10 15:03:20,361 - INFO - Fold 5, Epoch 7/10, Train Loss: 0.3531
+2025-05-10 15:06:07,853 - INFO - Fold 5, Epoch 8/10, Train Loss: 0.3485
+2025-05-10 15:08:54,934 - INFO - Fold 5, Epoch 9/10, Train Loss: 0.3353
+2025-05-10 15:11:41,355 - INFO - Fold 5, Epoch 10/10, Train Loss: 0.3315
+2025-05-10 15:11:56,950 - INFO - 
+Evaluation completed successfully!

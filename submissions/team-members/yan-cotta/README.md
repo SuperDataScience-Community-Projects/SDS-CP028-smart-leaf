@@ -1,72 +1,259 @@
-# Week 2 Submission: Data Preprocessing by Yan
+# Smart Leaf Disease Classification
 
-## Tasks Completed
+This project implements a deep learning solution for classifying crop diseases from leaf images, focusing on crops common in Bangladesh, such as corn, potato, rice, and wheat. The project leverages a convolutional neural network (CNN) to identify 14 disease classes, addressing challenges like class imbalance and image variability through robust preprocessing and optimization techniques.
 
-- **Dataset Retrieval**: Extracted the Kaggle dataset using `extract.py`.
-- **Image Verification**: Checked for corrupt images with `check_images.py` (no issues found).
-- **Class Imbalance Analysis**: Analyzed class distribution and visualized it in `class_distribution.png` using `analyze_classes.py`.
-- **Data Preprocessing**: Split the dataset into training (70%), validation (15%), and test (15%) sets with `data_preprocessing.py`.
+## Project Structure
+```
+.
+├── dataset/                   # Raw dataset (gitignored)
+├── dataset_organized/         # Reorganized dataset
+├── split_dataset/            # Train/val/test splits
+├── utils/
+│   ├── __init__.py           # Makes utils a package
+│   └── data_utils.py         # Utility functions for data processing and visualization
+├── scripts/
+│   ├── __init__.py           # Makes scripts a package
+│   ├── extract.py            # Extracts dataset from zip
+│   ├── check_images.py       # Validates image integrity
+│   ├── analyze_classes.py    # Analyzes class distribution
+│   ├── cleanup_dataset.py    # Removes corrupt images
+│   ├── data_preprocessing.py # Splits dataset into train/val/test
+│   ├── model_evaluation.py   # Trains and evaluates CNN model
+│   ├── verify_setup.py       # Verifies environment setup
+│   └── generate_metrics_plot.py # Generates aggregated metrics plot
+├── requirements.txt          # Project dependencies
+├── scripts/outputs/          # Output files (metrics, plots, logs)
+│   ├── evaluation_results.json # Baseline evaluation metrics
+│   ├── baseline_summary.txt  # Summary of baseline performance
+│   ├── confusion_matrix_fold_*.png # Confusion matrices per fold
+│   ├── aggregated_class_metrics.png # Class-wise performance plot
+│   └── evaluation.log        # Training and evaluation logs
+└── README.md                # Project documentation
+```
 
-## Files
+## Features
 
-- `extract.py`: Extracts the dataset zip file.
-- `check_images.py`: Verifies image integrity.
-- `analyze_classes.py`: Analyzes and plots class distribution.
-- `class_distribution.png`: Visualization of class distribution.
-- `data_preprocessing.py`: Splits dataset into train/validation/test sets.
+- **Robust Data Preprocessing**: Extracts, validates, and splits the dataset into train/validation/test sets
+- **Class Imbalance Handling**: Analyzes class distribution and applies class weights and oversampling (in progress)
+- **Comprehensive Evaluation**: Performs 5-fold cross-validation with precision, recall, F1-score, and ROC-AUC metrics
+- **Data Augmentation**: Applies standardized image transforms to enhance model robustness
+- **Modular Code**: Reusable utilities for data processing, visualization, and model training
+- **Detailed Outputs**: Generates confusion matrices, class-wise metrics plots, and JSON reports
 
-## Notes
+## Progress (as of May 10, 2025)
 
-- Training Samples: [Insert number after running the script, e.g., 10,414]
-- Validation Samples: [Insert number after running the script, e.g., 2,610]
-- Test Samples: [Insert number after running the script]
-- Class Folders: Confirmed in `split_dataset/train`, `split_dataset/val`, and `split_dataset/test` with no "Invalid" folder issues.
-- Check `class_distribution.png` for specific class imbalances (e.g., some classes may have zero samples).
+### Step 1: Environment Setup
+- Configured a reproducible environment with requirements.txt and verify_setup.py
+- Ensured all dependencies (PyTorch, scikit-learn, imbalanced-learn, etc.) are installed
+- Set random seeds (RANDOM_SEED = 42) for reproducibility
 
-## How to Reproduce This Work
+### Step 2: Baseline Model Evaluation
+- Trained and evaluated a custom CNN (LeafDiseaseClassifier) using 5-fold cross-validation (3 epochs per fold)
+- Achieved an average F1-score of 0.739 and validation loss of 0.487
+- Identified strong classes (F1 > 0.9): Corn___Common_Rust, Corn___Healthy, Potato___Early_Blight, Potato___Late_Blight, Rice___Neck_Blast
+- Noted problematic classes (F1 < 0.7): Rice___Leaf_Blast (0.2975), Rice___Healthy (0.4978), Rice___Brown_Spot (0.5184), Corn___Gray_Leaf_Spot (0.5237), Corn___Northern_Leaf_Blight (0.6895)
+- Generated five confusion matrices and an aggregated metrics plot
+- Documented findings in scripts/outputs/baseline_summary.txt
+- Fixed a plotting error in plot_aggregated_metrics to generate aggregated_class_metrics.png
 
-To replicate the preprocessing steps, follow these instructions. Since the dataset is too large to include, you'll need to download it separately.
+### Step 3: Addressing Class Imbalance
+- Implemented class weights using CrossEntropyLoss instead of oversampling
+- Achieved significant improvements:
+  - Average F1 Score increased to 0.804 (from baseline 0.7620)
+  - Average Validation Loss decreased to 0.409 (from baseline 0.4870)
+- Generated comprehensive fold-wise metrics:
+  - Fold 1: F1 = 0.792, Val Loss = 0.4591
+  - Fold 2: F1 = 0.854, Val Loss = 0.3772
+  - Fold 3: F1 = 0.828, Val Loss = 0.3326
+  - Fold 4: F1 = 0.700, Val Loss = 0.5522
+  - Fold 5: F1 = 0.845, Val Loss = 0.3236
+- Identified areas for improvement in rice disease classification
 
-### Download the Dataset
+### Step 4: Model Optimization
+- Increased training epochs to 10 per fold for better convergence
+- Fixed hyperparameters:
+  - Learning Rate: 0.001
+  - Batch Size: 32
+  - Dropout Rate: 0.3
+- Enhanced model training stability with consistent decrease in train loss
+- Applied class weights effectively (e.g., 6.1203 for Potato___Healthy)
 
-1. Obtain the Kaggle dataset (`new-bangladeshi-crop-disease.zip`) from Kaggle Dataset.
-2. Place the zip file in the project root directory (e.g., `~/Documents/Git/SDS-CP028-smart-leaf`).
+### Current Status and Next Steps
+- **Strengths**: 
+  - Excellent performance on Corn___Healthy and Rice___Neck_Blast
+  - Improved overall metrics across most classes
+  - Stable training with consistent loss reduction
+- **Challenges**: 
+  - Rice___Leaf_Blast and Rice___Healthy still show suboptimal performance
+  - Some feature confusion between rice disease classes
+- **Next Steps**:
+  - Enhance model robustness for rice classes
+  - Explore additional data augmentation techniques
+  - Fine-tune hyperparameters for problematic classes
 
-### Process the Dataset
+## Performance Metrics
 
-1. **Extract the Dataset**:
-    ```bash
-    python extract.py
-    ```
-    This extracts the contents of `new-bangladeshi-crop-disease.zip` into the `dataset/` folder.
+### Latest Evaluation Results
+- **Model Performance**:
+  - Average F1 Score: 0.804
+  - Average Validation Loss: 0.409
+  - Consistent improvement across folds
+- **Training Process**:
+  - 10 epochs per fold
+  - Train loss progression example (Fold 5): 0.8613 → 0.3315
+  - Effective class weight application for balance
 
-2. **Verify Images**:
-    ```bash
-    python check_images.py
-    ```
-    This scans the `dataset/` folder for corrupt images and removes them.
+### Visualization Highlights
+- Bar charts show improved class-wise performance
+- Confusion matrices reveal specific areas for improvement
+- Detailed metrics available in scripts/outputs/evaluation_results.json
 
-3. **Analyze Class Distribution**:
-    ```bash
-    python analyze_classes.py
-    ```
-    This generates `class_distribution.png`, visualizing the number of images per class.
+## Utilities (utils/data_utils.py)
 
-4. **Split the Dataset**:
-    - Remove non-class folders if present (e.g., `rm -r dataset/Invalid` or `rm dataset/Info.txt`).
-    - Ensure the script uses the correct path to `temp_dataset` (e.g., `/home/yan/Documents/Git/SDS-CP028-smart-leaf/temp_dataset`).
-    - Run from the project root:
-      ```bash
-      cd /home/yan/Documents/Git/SDS-CP028-smart-leaf
-      python submissions/team-members/yan-cotta/data_preprocessing.py
-      ```
-    This splits the dataset into `split_dataset/train` (70%), `split_dataset/val` (15%), and `split_dataset/test` (15%).
+- **Data Transforms**: Applies resizing, normalization, and basic augmentation (flips) for training and validation
+- **Image Validation**: Verifies image integrity to exclude corrupt files
+- **Class Distribution**: Visualizes class distribution (class_distribution.png) to identify imbalances
+- **Class Weights**: Computes weights for loss function to mitigate class imbalance
 
-### Prerequisites
+## Installation
+
+### Clone the Repository:
+```bash
+git clone https://github.com/YanCotta/SDS-CP028-smart-leaf.git
+cd SDS-CP028-smart-leaf/submissions/team-members/yan-cotta
+```
+
+### Create and Activate a Virtual Environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Linux/Mac
+venv\Scripts\activate     # On Windows
+```
+
+### Install Dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-**Notes**:
-- If running scripts from a subdirectory, ensure paths are correctly set in `data_preprocessing.py` (e.g., use absolute paths).
-- Update sample counts in this README after running `data_preprocessing.py`.
+#### Requirements.txt includes:
+```
+torch==2.0.1
+torchvision==0.15.2
+scikit-learn==1.3.0
+imbalanced-learn==0.11.0
+numpy==1.24.3
+pandas==2.0.3
+matplotlib==3.7.2
+seaborn==0.12.2
+Pillow==10.0.0
+splitfolders==0.5.1
+```
+
+### Verify Setup:
+```bash
+python scripts/verify_setup.py
+```
+This checks dependencies, directory structure, and script integrity.
+
+## Dataset
+
+### Download:
+1. Download the dataset from [Kaggle](https://www.kaggle.com/datasets/nafishamoin/new-bangladeshi-crop-disease)
+2. Place new-bangladeshi-crop-disease.zip in the project root
+
+### Prepare:
+- The dataset is gitignored to manage repository size
+- Extract and preprocess using provided scripts (see Usage)
+
+## Usage
+
+Run scripts in sequence to process the dataset and evaluate the model:
+
+### Extract Dataset:
+```bash
+python scripts/extract.py
+```
+Extracts new-bangladeshi-crop-disease.zip to dataset/
+
+### Validate Images:
+```bash
+python scripts/check_images.py
+```
+Identifies and removes corrupt images, logging results to image_validation_log.txt
+
+### Clean Dataset:
+```bash
+python scripts/cleanup_dataset.py
+```
+Removes invalid images based on check_images.py output
+
+### Analyze Class Distribution:
+```bash
+python scripts/analyze_classes.py
+```
+Generates class_distribution.png showing class imbalances
+
+### Preprocess Dataset:
+```bash
+python scripts/data_preprocessing.py
+```
+Reorganizes dataset/ into dataset_organized/ and splits into split_dataset/
+
+### Evaluate Model:
+```bash
+python scripts/model_evaluation.py
+```
+Trains and evaluates the CNN with 5-fold cross-validation
+
+### Generate Metrics Plot:
+```bash
+python scripts/generate_metrics_plot.py
+```
+Creates aggregated_class_metrics.png from evaluation_results.json
+
+## Output Files
+
+### Data Analysis:
+- class_distribution.png: Visualizes class distribution
+- image_validation_log.txt: Logs corrupt image checks
+
+### Model Evaluation:
+- evaluation_results.json: Baseline metrics
+- evaluation_results_smote.json: Oversampling metrics
+- confusion_matrix_fold_*.png: Confusion matrices for each fold
+- aggregated_class_metrics.png: Class-wise performance metrics
+- baseline_summary.txt: Summary of baseline evaluation
+- evaluation.log: Detailed training/evaluation logs
+
+## Dependencies
+
+- torch & torchvision: Deep learning framework
+- scikit-learn: Metrics and cross-validation
+- imbalanced-learn: Oversampling techniques
+- numpy & pandas: Data manipulation
+- matplotlib & seaborn: Visualization
+- Pillow: Image processing
+- splitfolders: Dataset splitting
+
+See requirements.txt for version details.
+
+## Notes
+
+- Class Imbalance: Addressed using class weights and WeightedRandomSampler
+- Performance: Baseline F1-score of 0.739 with issues in minority classes
+- Reproducibility: Random seeds are set
+- Hardware: CPU used for baseline; GPU recommended
+- Dataset: Must be downloaded manually
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/your-feature`)
+3. Commit changes (`git commit -m 'Add your feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a pull request
+
+## License
+
+This project is licensed under the MIT License.
+

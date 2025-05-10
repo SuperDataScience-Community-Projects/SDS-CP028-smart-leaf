@@ -1,0 +1,31 @@
+Baseline Summary
+Updated: 2025-05-10
+
+Baseline Metrics (Previous):
+- Average F1 Score: 0.7620
+- Validation Loss: 0.4870
+
+Latest Evaluation (5-Fold Cross-Validation, 2025-05-10):
+- Average F1 Score: 0.804
+- Average Validation Loss: 0.409
+- Fold-Specific Validation Losses: 
+  - Fold 1: 0.4591
+  - Fold 2: 0.3772
+  - Fold 3: 0.3326
+  - Fold 4: 0.5522
+  - Fold 5: 0.3236
+
+Key Observations:
+- Model improved over baseline with a 0.042 increase in F1 score and 0.078 decrease in validation loss.
+- Training stable across 10 epochs per fold, with train loss dropping ~60–65% (e.g., Fold 5: 0.8613 to 0.3315).
+- Strengths: High F1 scores (>0.9) for Corn___Healthy, Rice___Neck_Blast, Wheat___Healthy, Wheat___Yellow_Rust.
+- Weaknesses: Low F1 scores for Rice___Leaf_Blast (avg ~0.32) and Rice___Healthy (avg ~0.58), with significant misclassifications (e.g., Fold 5: 95 Rice___Leaf_Blast as Rice___Healthy).
+- Class weights applied (e.g., 6.1203 for Potato___Healthy) to address imbalance, improving recall for some classes.
+
+Changes Made:
+- Implemented 5-fold cross-validation with updated dataset (13,024 samples).
+- Trained model for 10 epochs per fold, optimizing with class-weighted loss.
+
+Next Steps:
+- Investigate feature overlap in rice classes.
+- Consider data augmentation or additional samples for underperforming classes.
