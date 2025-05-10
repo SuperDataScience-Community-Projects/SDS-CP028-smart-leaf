@@ -1,0 +1,14 @@
+Baseline Performance (Step 2)
+- Average Validation Loss: 0.487
+- Average F1-score: 0.739
+- Strong Classes (F1 > 0.9): Corn___Common_Rust, Corn___Healthy, Potato___Early_Blight, Potato___Late_Blight, Rice___Neck_Blast
+- Problematic Classes (F1 < 0.7): Rice___Leaf_Blast (0.2975), Rice___Healthy (0.4978), Rice___Brown_Spot (0.5184), Corn___Gray_Leaf_Spot (0.5237), Corn___Northern_Leaf_Blight (0.6895)
+- Observations:
+  - Class imbalance affects minority classes (e.g., Rice___Leaf_Blast: ~100 samples).
+  - Rice___Healthy underperforms despite high samples (~1488), likely due to confusion with other rice diseases.
+  - Validation loss (~0.487) indicates underfitting; more epochs or tuning needed.
+  - Confusion matrices show misclassifications, especially among rice classes.
+- Next Steps:
+  - Address class imbalance with oversampling (Step 3).
+  - Enhance data augmentation (Step 4).
+  - Tune hyperparameters (Step 5).
