@@ -6,14 +6,16 @@ Performs k-fold cross-validation and generates detailed performance metrics.
 import os
 import sys
 import logging
-import json  # Added import
+import json
 from pathlib import Path
 import numpy as np
+from numpy.typing import ArrayLike
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import precision_recall_fscore_support, roc_auc_score, confusion_matrix
+from imblearn.over_sampling import SMOTE
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, SubsetRandomSampler, WeightedRandomSampler
@@ -154,6 +156,24 @@ class LeafDiseaseClassifier(nn.Module):
         x = self.classifier(x)
         return x
 
+class SMOTEDataset(torch.utils.data.Dataset):
+    """Custom Dataset for SMOTE-augmented data."""
+    def __init__(self, features: ArrayLike, labels: ArrayLike, transform=None):
+        self.features = torch.FloatTensor(features)
+        self.labels = torch.LongTensor(labels)
+        self.transform = transform
+        
+    def __len__(self):
+        return len(self.labels)
+    
+    def __getitem__(self, idx):
+        feature = self.features[idx]
+        if self.transform:
+            # Reshape to image format and apply transforms
+            feature = feature.reshape(3, IMG_SIZE[0], IMG_SIZE[1])
+            feature = self.transform(feature)
+        return feature, self.labels[idx]
+
 def plot_confusion_matrix(cm, classes, fold, save_dir):
     """Plot confusion matrix for a fold."""
     plt.figure(figsize=(15, 12))
@@ -163,6 +183,28 @@ def plot_confusion_matrix(cm, classes, fold, save_dir):
     plt.title(f'Confusion Matrix - Fold {fold}')
     plt.savefig(save_dir / f'confusion_matrix_fold_{fold}.png')
     plt.close()
+
+def apply_smote(X_train: ArrayLike, y_train: ArrayLike, random_state: int = RANDOM_SEED) -> tuple[ArrayLike, ArrayLike]:
+    """Apply SMOTE oversampling to training data.
+    
+    Args:
+        X_train: Training features
+        y_train: Training labels
+        random_state: Random seed for reproducibility
+        
+    Returns:
+        tuple: (X_resampled, y_resampled) - SMOTE-augmented training data and labels
+    """
+    logging.info("Applying SMOTE oversampling to training data...")
+    try:
+        smote = SMOTE(random_state=random_state)
+        X_resampled, y_resampled = smote.fit_resample(X_train, y_train)
+        logging.info(f"SMOTE completed. New sample distribution: {np.bincount(y_resampled)}")
+        return X_resampled, y_resampled
+    except Exception as e:
+        logging.error(f"Error during SMOTE: {str(e)}")
+        logging.warning("Proceeding with original data due to SMOTE error")
+        return X_train, y_train
 
 def compute_fold_metrics(predictions, true_labels, class_names):
     """Compute metrics for a single fold."""
@@ -231,23 +273,41 @@ def main():
         labels = torch.tensor([label for _, label in train_dataset])
         fold_metrics = []
         
-        for fold, (train_idx, val_idx) in enumerate(skf.split(np.zeros(len(labels)), labels)):
+        # Prepare full dataset as numpy arrays for SMOTE
+        all_data = []
+        for img, _ in train_dataset:
+            all_data.append(img.numpy().reshape(-1))  # Flatten the image
+        X = np.array(all_data)
+        y = labels.numpy()
+        
+        for fold, (train_idx, val_idx) in enumerate(skf.split(X, y)):
             logging.info(f"\nProcessing fold {fold + 1}/{NUM_FOLDS}")
             
-            # Create data loaders without oversampling
-            train_sampler = SubsetRandomSampler(train_idx)
-            val_sampler = SubsetRandomSampler(val_idx)
+            # Split data for this fold
+            X_train, y_train = X[train_idx], y[train_idx]
             
+            # Apply SMOTE to training data
+            X_train_smote, y_train_smote = apply_smote(X_train, y_train)
+            
+            # Create SMOTE-augmented dataset
+            train_smote_dataset = SMOTEDataset(
+                X_train_smote, 
+                y_train_smote,
+                transform=train_dataset.transform
+            )
+            
+            # Create data loaders
             train_loader = DataLoader(
-                train_dataset,
+                train_smote_dataset,
                 batch_size=BATCH_SIZE,
-                sampler=train_sampler,
+                shuffle=True,
                 num_workers=NUM_WORKERS
             )
+            
             val_loader = DataLoader(
                 val_dataset,
                 batch_size=BATCH_SIZE,
-                sampler=val_sampler,
+                sampler=SubsetRandomSampler(val_idx),
                 num_workers=NUM_WORKERS
             )
             
