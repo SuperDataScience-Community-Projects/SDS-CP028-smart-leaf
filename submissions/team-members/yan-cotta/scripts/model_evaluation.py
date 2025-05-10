@@ -184,6 +184,30 @@ def plot_confusion_matrix(cm, classes, fold, save_dir):
     plt.savefig(save_dir / f'confusion_matrix_fold_{fold}.png')
     plt.close()
 
+class EarlyStopping:
+    """Early stopping to prevent overfitting and save best model."""
+    def __init__(self, patience: int = 3, verbose: bool = True, delta: float = 0):
+        self.patience = patience
+        self.verbose = verbose
+        self.counter = 0
+        self.best_loss = None
+        self.early_stop = False
+        self.delta = delta
+        
+    def __call__(self, val_loss: float) -> bool:
+        if self.best_loss is None:
+            self.best_loss = val_loss
+        elif val_loss > self.best_loss - self.delta:
+            self.counter += 1
+            if self.verbose:
+                logging.info(f'EarlyStopping counter: {self.counter} out of {self.patience}')
+            if self.counter >= self.patience:
+                self.early_stop = True
+        else:
+            self.best_loss = val_loss
+            self.counter = 0
+        return self.early_stop
+
 def apply_smote(X_train: ArrayLike, y_train: ArrayLike, random_state: int = RANDOM_SEED) -> tuple[ArrayLike, ArrayLike]:
     """Apply SMOTE oversampling to training data.
     
@@ -321,11 +345,37 @@ def main():
             criterion = nn.CrossEntropyLoss(weight=class_weights)
             optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
             
+            # Early stopping instance
+            early_stopping = EarlyStopping(patience=5, verbose=True)
+            
+            # Initialize early stopping
+            early_stopping = EarlyStopping(patience=3, verbose=True)
+            best_model_state = None
+            best_val_loss = float('inf')
+            
             # Train and evaluate
             for epoch in range(NUM_EPOCHS):
                 train_loss = train_model(model, train_loader, criterion, optimizer, device)
-                logging.info(f"Fold {fold + 1}, Epoch {epoch + 1}/{NUM_EPOCHS}, Train Loss: {train_loss:.4f}")
+                val_loss, val_predictions, val_labels = evaluate_fold(model, val_loader, criterion, device)
+                
+                logging.info(f"Fold {fold + 1}, Epoch {epoch + 1}/{NUM_EPOCHS}, "
+                           f"Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}")
+                
+                # Save best model
+                if val_loss < best_val_loss:
+                    best_val_loss = val_loss
+                    best_model_state = model.state_dict().copy()
+                
+                # Early stopping check
+                if early_stopping(val_loss):
+                    logging.info(f"Early stopping triggered at epoch {epoch + 1}")
+                    break
             
+            # Load best model for final evaluation
+            if best_model_state is not None:
+                model.load_state_dict(best_model_state)
+            
+            # Final evaluation
             val_loss, predictions, true_labels = evaluate_fold(model, val_loader, criterion, device)
             
             # Compute and save metrics
