@@ -25,9 +25,11 @@ def get_transforms(img_size: Tuple[int, int] = (224, 224)) -> Dict[str, transfor
     """
     train_transforms = transforms.Compose([
         transforms.Resize(img_size),
+        transforms.RandomResizedCrop(img_size, scale=(0.8, 1.0)),
         transforms.RandomHorizontalFlip(),
         transforms.RandomVerticalFlip(),
         transforms.RandomRotation(20),
+        transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
