@@ -18,6 +18,6 @@ def compare_metrics(file1, file2):
     print(f"Oversampling Validation Loss: {np.mean([m['val_loss'] for m in m2]):.4f}")
 
 compare_metrics(
-    'scripts/outputs/evaluation_results.json',
-    'scripts/outputs/evaluation_results_smote.json'
+    'scripts/outputs/evaluation_results_smote.json',
+    'scripts/outputs/evaluation_results_tuned.json'
 )
