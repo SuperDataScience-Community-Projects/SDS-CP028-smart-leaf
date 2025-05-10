@@ -15,7 +15,7 @@ from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import precision_recall_fscore_support, roc_auc_score, confusion_matrix
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader, SubsetRandomSampler
+from torch.utils.data import DataLoader, SubsetRandomSampler, WeightedRandomSampler
 from torchvision import datasets
 
 # Add project root to sys.path
@@ -35,10 +35,10 @@ logging.basicConfig(
 # Constants
 RANDOM_SEED = 42
 IMG_SIZE = (224, 224)
-BATCH_SIZE = 16  # Reduced for CPU
-NUM_WORKERS = 2  # Reduced to prevent I/O bottleneck
+BATCH_SIZE = 16
+NUM_WORKERS = 2
 NUM_FOLDS = 5
-NUM_EPOCHS = 3  # Reduced for faster testing
+NUM_EPOCHS = 3
 
 # Set random seeds for reproducibility
 np.random.seed(RANDOM_SEED)
@@ -49,15 +49,7 @@ if torch.cuda.is_available():
     torch.backends.cudnn.benchmark = False
 
 def load_datasets(data_dir: Path) -> tuple[datasets.ImageFolder, datasets.ImageFolder]:
-    """
-    Load datasets with different transforms for training and validation.
-    
-    Args:
-        data_dir: Path to the data directory
-        
-    Returns:
-        Tuple of (train_dataset, val_dataset)
-    """
+    """Load datasets with different transforms for training and validation."""
     transforms = get_transforms(img_size=IMG_SIZE)
     train_dataset = datasets.ImageFolder(data_dir, transform=transforms['train'])
     val_dataset = datasets.ImageFolder(data_dir, transform=transforms['val'])
@@ -80,55 +72,32 @@ def train_model(model, train_loader, criterion, optimizer, device):
     epoch_loss = running_loss / len(train_loader.dataset)
     return epoch_loss
 
-def evaluate_fold(
-    model: nn.Module,
-    dataloader: DataLoader,
-    criterion: nn.Module,
-    device: torch.device
-) -> tuple[float, np.ndarray, np.ndarray]:
-    """
-    Evaluate model on a single fold.
-    
-    Args:
-        model: PyTorch model to evaluate
-        dataloader: DataLoader for the evaluation data
-        criterion: Loss function
-        device: Device to run evaluation on
-        
-    Returns:
-        Tuple of (average loss, predicted labels, true labels)
-    """
+def evaluate_fold(model: nn.Module, dataloader: DataLoader, criterion: nn.Module, device: torch.device):
+    """Evaluate model on a single fold."""
     model.eval()
     predictions = []
     true_labels = []
     running_loss = 0.0
     total_samples = 0
-    
     with torch.no_grad():
         for inputs, labels in dataloader:
             inputs = inputs.to(device)
             labels = labels.to(device)
             batch_size = labels.size(0)
-            
             try:
                 outputs = model(inputs)
                 loss = criterion(outputs, labels)
-                
                 running_loss += loss.item() * batch_size
                 total_samples += batch_size
-                
                 _, predicted = torch.max(outputs, 1)
                 predictions.extend(predicted.cpu().numpy())
                 true_labels.extend(labels.cpu().numpy())
-            
             except RuntimeError as e:
                 logging.error(f"Error during evaluation: {str(e)}")
                 continue
-    
     avg_loss = running_loss / total_samples if total_samples > 0 else float('inf')
     predictions = np.array(predictions)
     true_labels = np.array(true_labels)
-    
     return avg_loss, predictions, true_labels
 
 class LeafDiseaseClassifier(nn.Module):
@@ -152,7 +121,7 @@ class LeafDiseaseClassifier(nn.Module):
         )
         self._initialize_weights()
     
-    def _make_layer(self, in_channels: int, out_channels: int, blocks: int, stride: int = 1) -> nn.Sequential:
+    def _make_layer(self, in_channels: int, out_channels: int, blocks: int, stride: int = 1):
         layers = []
         layers.append(nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=stride, padding=1, bias=False))
         layers.append(nn.BatchNorm2d(out_channels))
@@ -163,7 +132,7 @@ class LeafDiseaseClassifier(nn.Module):
             layers.append(nn.ReLU(inplace=True))
         return nn.Sequential(*layers)
     
-    def _initialize_weights(self) -> None:
+    def _initialize_weights(self):
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
@@ -205,12 +174,12 @@ def compute_fold_metrics(predictions, true_labels, class_names):
         'precision': precision.tolist(),
         'recall': recall.tolist(),
         'f1': f1.tolist(),
-        'roc_auc': roc_auc
+        'roc_auc': roc_auc,
+        'class_names': class_names
     }
 
 def save_metrics(fold_metrics, file_path):
     """Save metrics to a JSON file."""
-    import json
     with open(file_path, 'w') as f:
         json.dump(fold_metrics, f)
 
@@ -218,7 +187,7 @@ def plot_aggregated_metrics(fold_metrics, output_dir):
     """Plot aggregated metrics across folds."""
     avg_metrics = {}
     for key in fold_metrics[0].keys():
-        if key not in ['fold', 'class_names']:  # Exclude non-numeric fields
+        if key not in ['fold', 'class_names']:
             avg_metrics[key] = np.mean([fm[key] for fm in fold_metrics], axis=0)
     
     metrics_df = pd.DataFrame(avg_metrics)
@@ -251,30 +220,40 @@ def main():
         skf = StratifiedKFold(n_splits=NUM_FOLDS, shuffle=True, random_state=RANDOM_SEED)
         fold_metrics = []
         
-        # Get class weights for handling imbalance
-        class_weights = compute_class_weights(train_dataset).to(device)
+        # Compute sample weights for oversampling
+        labels = torch.tensor([label for _, label in train_dataset])
+        class_counts = torch.bincount(labels)
+        sample_weights = torch.zeros(len(labels))
+        for i, label in enumerate(labels):
+            sample_weights[i] = 1.0 / class_counts[label]
         
-        labels = [label for _, label in train_dataset]
         for fold, (train_idx, val_idx) in enumerate(skf.split(np.zeros(len(labels)), labels)):
             logging.info(f"\nProcessing fold {fold + 1}/{NUM_FOLDS}")
             
-            # Create data loaders
+            # Create data loaders with weighted sampling for training
+            train_sampler = WeightedRandomSampler(
+                weights=sample_weights[train_idx],
+                num_samples=len(train_idx),
+                replacement=True
+            )
+            val_sampler = SubsetRandomSampler(val_idx)
+            
             train_loader = DataLoader(
                 train_dataset,
                 batch_size=BATCH_SIZE,
-                sampler=SubsetRandomSampler(train_idx),
+                sampler=train_sampler,
                 num_workers=NUM_WORKERS
             )
             val_loader = DataLoader(
                 val_dataset,
                 batch_size=BATCH_SIZE,
-                sampler=SubsetRandomSampler(val_idx),
+                sampler=val_sampler,
                 num_workers=NUM_WORKERS
             )
             
             # Initialize model
             model = LeafDiseaseClassifier(num_classes=n_classes).to(device)
-            criterion = nn.CrossEntropyLoss(weight=class_weights)
+            criterion = nn.CrossEntropyLoss(weight=compute_class_weights(train_dataset).to(device))
             optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
             
             # Train the model
@@ -296,14 +275,14 @@ def main():
             metrics = compute_fold_metrics(predictions, true_labels, train_dataset.classes)
             metrics['fold'] = fold + 1
             metrics['val_loss'] = val_loss
-            metrics['class_names'] = train_dataset.classes  # Store for plotting
+            metrics['class_names'] = train_dataset.classes
             fold_metrics.append(metrics)
         
         # Aggregate and save results
-        save_metrics(fold_metrics, script_dir / "outputs" / "evaluation_results.json")
+        save_metrics(fold_metrics, script_dir / "outputs" / "evaluation_results_smote.json")
         plot_aggregated_metrics(fold_metrics, script_dir / "outputs")
         
-        logging.info("\nEvaluation completed successfully!")
+        logging.info("\nEvaluation with oversampling completed successfully!")
         
     except Exception as e:
         logging.error(f"Error during evaluation: {str(e)}")
