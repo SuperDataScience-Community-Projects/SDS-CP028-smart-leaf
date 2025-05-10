@@ -56,9 +56,11 @@ This project implements a deep learning solution for classifying crop diseases f
 - Documented findings in scripts/outputs/baseline_summary.txt
 - Fixed a plotting error in plot_aggregated_metrics to generate aggregated_class_metrics.png
 
-### Step 3: Addressing Class Imbalance (In Progress)
-- Updated model_evaluation.py to use WeightedRandomSampler for oversampling minority classes
-- Preparing to run and compare results against the baseline
+### Step 3: Addressing Class Imbalance
+- Implemented oversampling with `WeightedRandomSampler` to boost minority class performance.
+- Initial results showed improved F1-scores for some classes (e.g., `Rice___Healthy`: +0.2299) but a higher validation loss (2.7789 vs. 0.4870) and worse average F1 (0.6365 vs. 0.7620).
+- Adjusted `SAMPLING_FACTOR` to 0.2 and increased `NUM_EPOCHS` to 5 to stabilize training.
+- Ready for Step 4 (data augmentation) and Step 5 (hyperparameter tuning) to further refine the model.
 
 ## Utilities (utils/data_utils.py)
 

@@ -39,8 +39,8 @@ IMG_SIZE = (224, 224)
 BATCH_SIZE = 16
 NUM_WORKERS = 2
 NUM_FOLDS = 5
-NUM_EPOCHS = 3
-SAMPLING_FACTOR = 0.5  # Added to balance oversampling
+NUM_EPOCHS = 5         # Increased from 3
+SAMPLING_FACTOR = 0.2  # Reduced from 0.5
 
 # Set random seeds for reproducibility
 np.random.seed(RANDOM_SEED)
@@ -163,7 +163,9 @@ def plot_confusion_matrix(cm, classes, fold, save_dir):
 
 def compute_fold_metrics(predictions, true_labels, class_names):
     """Compute metrics for a single fold."""
-    precision, recall, f1, _ = precision_recall_fscore_support(true_labels, predictions, average=None)
+    precision, recall, f1, _ = precision_recall_fscore_support(
+        true_labels, predictions, average=None, zero_division=0
+    )
     roc_auc = []
     for class_idx in range(len(class_names)):
         true_binary = (true_labels == class_idx).astype(int)
