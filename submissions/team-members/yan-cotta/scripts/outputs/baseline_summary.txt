@@ -1,21 +1,31 @@
-Baseline Performance (Step 2)
-- Average Validation Loss: 0.487
-- Average F1-score: 0.739
-- Strong Classes (F1 > 0.9): Corn___Common_Rust, Corn___Healthy, Potato___Early_Blight, Potato___Late_Blight, Rice___Neck_Blast
-- Problematic Classes (F1 < 0.7): Rice___Leaf_Blast (0.2975), Rice___Healthy (0.4978), Rice___Brown_Spot (0.5184), Corn___Gray_Leaf_Spot (0.5237), Corn___Northern_Leaf_Blight (0.6895)
-- Observations:
-  - Class imbalance affects minority classes (e.g., Rice___Leaf_Blast: ~100 samples).
-  - Rice___Healthy underperforms despite high samples (~1488), likely due to confusion with other rice diseases.
-  - Validation loss (~0.487) indicates underfitting; more epochs or tuning needed.
-  - Confusion matrices show misclassifications, especially among rice classes.
-- Visualizations:
-  - Generated aggregated_class_metrics.png to visualize class-wise performance.
+Baseline Summary
+Updated: 2025-05-10
 
+Baseline Metrics (Previous):
+- Average F1 Score: 0.7620
+- Validation Loss: 0.4870
 
-  Step 3: Oversampling and Hyperparameter Tuning
-- Initial oversampling (SMOTE) reduced F1 to 0.6365 and increased validation loss to 2.7789, indicating overfitting.
-- Hyperparameter tuning tested lr=[0.01, 0.001, 0.0001], dropout=[0.7, 0.5, 0.3], batch_size=[16, 32].
-- Best tuned result (lr=0.001, dropout=0.5, batch_size=32): F1 = 0.6333.
-- Final refinement: lr=0.001, dropout=0.3, batch_size=32, epochs=10, class weights instead of oversampling.
-- Result: [Insert F1 and validation loss from your run here].
-- Conclusion: [e.g., Improved stability, F1 approaching baseline, etc.].
+Latest Evaluation (5-Fold Cross-Validation, 2025-05-10):
+- Average F1 Score: 0.804
+- Average Validation Loss: 0.409
+- Fold-Specific Validation Losses: 
+  - Fold 1: 0.4591
+  - Fold 2: 0.3772
+  - Fold 3: 0.3326
+  - Fold 4: 0.5522
+  - Fold 5: 0.3236
+
+Key Observations:
+- Model improved over baseline with a 0.042 increase in F1 score and 0.078 decrease in validation loss.
+- Training stable across 10 epochs per fold, with train loss dropping ~60–65% (e.g., Fold 5: 0.8613 to 0.3315).
+- Strengths: High F1 scores (>0.9) for Corn___Healthy, Rice___Neck_Blast, Wheat___Healthy, Wheat___Yellow_Rust.
+- Weaknesses: Low F1 scores for Rice___Leaf_Blast (avg ~0.32) and Rice___Healthy (avg ~0.58), with significant misclassifications (e.g., Fold 5: 95 Rice___Leaf_Blast as Rice___Healthy).
+- Class weights applied (e.g., 6.1203 for Potato___Healthy) to address imbalance, improving recall for some classes.
+
+Changes Made:
+- Implemented 5-fold cross-validation with updated dataset (13,024 samples).
+- Trained model for 10 epochs per fold, optimizing with class-weighted loss.
+
+Next Steps:
+- Investigate feature overlap in rice classes.
+- Consider data augmentation or additional samples for underperforming classes.
