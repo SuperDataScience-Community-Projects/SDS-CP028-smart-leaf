@@ -25,16 +25,20 @@ from utils.data_utils import get_transforms, compute_class_weights
 # Set up logging
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(Path(__file__).parent / "outputs" / "evaluation.log"),
+        logging.StreamHandler()
+    ]
 )
 
 # Constants
 RANDOM_SEED = 42
 IMG_SIZE = (224, 224)
-BATCH_SIZE = 32
-NUM_WORKERS = min(os.cpu_count() or 1, 8)
+BATCH_SIZE = 16  # Reduced for CPU
+NUM_WORKERS = 2  # Reduced to prevent I/O bottleneck
 NUM_FOLDS = 5
-NUM_EPOCHS = 10  # Added for training
+NUM_EPOCHS = 3  # Reduced for faster testing
 
 # Set random seeds for reproducibility
 np.random.seed(RANDOM_SEED)
@@ -275,11 +279,14 @@ def main():
             
             # Train the model
             for epoch in range(NUM_EPOCHS):
+                logging.info(f"Starting epoch {epoch + 1}/{NUM_EPOCHS} for fold {fold + 1}")
                 train_loss = train_model(model, train_loader, criterion, optimizer, device)
                 logging.info(f"Fold {fold + 1}, Epoch {epoch + 1}/{NUM_EPOCHS}, Train Loss: {train_loss:.4f}")
             
             # Evaluate fold
+            logging.info(f"Evaluating fold {fold + 1}")
             val_loss, predictions, true_labels = evaluate_fold(model, val_loader, criterion, device)
+            logging.info(f"Fold {fold + 1}, Validation Loss: {val_loss:.4f}")
             
             # Compute confusion matrix
             cm = confusion_matrix(true_labels, predictions)
@@ -305,14 +312,4 @@ def main():
 if __name__ == "__main__":
     output_dir = Path(__file__).parent / "outputs"
     output_dir.mkdir(exist_ok=True)
-    
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(levelname)s - %(message)s',
-        handlers=[
-            logging.FileHandler(output_dir / "evaluation.log"),
-            logging.StreamHandler()
-        ]
-    )
-    
     main()
