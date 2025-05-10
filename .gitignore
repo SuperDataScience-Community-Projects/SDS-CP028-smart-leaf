@@ -65,7 +65,6 @@ SmartLeaf_dataset/
 submissions/team-members/*/data/
 *.jpg
 *.jpeg
-*.png
 *.gif
 *.bmp
 *.zip
