@@ -37,11 +37,13 @@ logging.basicConfig(
 # Constants
 RANDOM_SEED = 42
 IMG_SIZE = (224, 224)
-BATCH_SIZE = 16
+BATCH_SIZE = 32  # Updated from 16
 NUM_WORKERS = 2
 NUM_FOLDS = 5
-NUM_EPOCHS = 5         # Increased from 3
-SAMPLING_FACTOR = 0.2  # Reduced from 0.5
+NUM_EPOCHS = 10  # Updated from 5
+LEARNING_RATE = 0.001
+DROPOUT_RATE = 0.3
+# Remove SAMPLING_FACTOR since we're using class weights instead
 
 # Set random seeds for reproducibility
 np.random.seed(RANDOM_SEED)
@@ -214,106 +216,74 @@ def main():
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         logging.info(f"Using device: {device}")
         
-        # Define parameter grid for tuning
-        param_grid = {
-            'lr': [0.0001, 0.001, 0.01],
-            'batch_size': [16, 32, 64],
-            'dropout': [0.3, 0.5, 0.7]
-        }
-        param_list = list(ParameterSampler(param_grid, n_iter=5, random_state=RANDOM_SEED))
-        
         # Load datasets
         script_dir = Path(__file__).parent
         data_dir = script_dir.parent / "dataset_organized"
         train_dataset, val_dataset = load_datasets(data_dir)
         n_classes = len(train_dataset.classes)
         
+        # Compute class weights once for all folds
+        class_weights = compute_class_weights(train_dataset).to(device)
+        logging.info(f"Class weights: {class_weights}")
+        
         # Initialize k-fold cross validation
         skf = StratifiedKFold(n_splits=NUM_FOLDS, shuffle=True, random_state=RANDOM_SEED)
         labels = torch.tensor([label for _, label in train_dataset])
+        fold_metrics = []
         
-        best_f1 = 0
-        best_params = None
-        best_metrics = None
+        for fold, (train_idx, val_idx) in enumerate(skf.split(np.zeros(len(labels)), labels)):
+            logging.info(f"\nProcessing fold {fold + 1}/{NUM_FOLDS}")
+            
+            # Create data loaders without oversampling
+            train_sampler = SubsetRandomSampler(train_idx)
+            val_sampler = SubsetRandomSampler(val_idx)
+            
+            train_loader = DataLoader(
+                train_dataset,
+                batch_size=BATCH_SIZE,
+                sampler=train_sampler,
+                num_workers=NUM_WORKERS
+            )
+            val_loader = DataLoader(
+                val_dataset,
+                batch_size=BATCH_SIZE,
+                sampler=val_sampler,
+                num_workers=NUM_WORKERS
+            )
+            
+            # Initialize model with fixed dropout rate
+            model = LeafDiseaseClassifier(
+                num_classes=n_classes,
+                dropout_rate=DROPOUT_RATE
+            ).to(device)
+            
+            # Use weighted cross entropy loss and Adam optimizer with fixed learning rate
+            criterion = nn.CrossEntropyLoss(weight=class_weights)
+            optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
+            
+            # Train and evaluate
+            for epoch in range(NUM_EPOCHS):
+                train_loss = train_model(model, train_loader, criterion, optimizer, device)
+                logging.info(f"Fold {fold + 1}, Epoch {epoch + 1}/{NUM_EPOCHS}, Train Loss: {train_loss:.4f}")
+            
+            val_loss, predictions, true_labels = evaluate_fold(model, val_loader, criterion, device)
+            
+            # Compute and save metrics
+            metrics = compute_fold_metrics(predictions, true_labels, train_dataset.classes)
+            metrics['fold'] = fold + 1
+            metrics['val_loss'] = val_loss
+            metrics['class_names'] = train_dataset.classes
+            fold_metrics.append(metrics)
+            
+            # Save confusion matrix
+            cm = confusion_matrix(true_labels, predictions)
+            plot_confusion_matrix(cm, train_dataset.classes, fold + 1, script_dir / "outputs")
         
-        # Hyperparameter tuning loop
-        for params in param_list:
-            logging.info(f"\nTesting parameters: {params}")
-            fold_metrics = []
-            
-            # Compute sample weights for oversampling
-            class_counts = torch.bincount(labels)
-            sample_weights = torch.zeros(len(labels))
-            for i, label in enumerate(labels):
-                sample_weights[i] = SAMPLING_FACTOR / class_counts[label]
-            
-            # K-fold cross validation with current parameters
-            for fold, (train_idx, val_idx) in enumerate(skf.split(np.zeros(len(labels)), labels)):
-                logging.info(f"Processing fold {fold + 1}/{NUM_FOLDS}")
-                
-                # Create data loaders with current batch size
-                train_sampler = WeightedRandomSampler(
-                    weights=sample_weights[train_idx],
-                    num_samples=len(train_idx),
-                    replacement=True
-                )
-                val_sampler = SubsetRandomSampler(val_idx)
-                
-                train_loader = DataLoader(
-                    train_dataset,
-                    batch_size=int(params['batch_size']),
-                    sampler=train_sampler,
-                    num_workers=NUM_WORKERS
-                )
-                val_loader = DataLoader(
-                    val_dataset,
-                    batch_size=int(params['batch_size']),
-                    sampler=val_sampler,
-                    num_workers=NUM_WORKERS
-                )
-                
-                # Initialize model with current dropout rate
-                model = LeafDiseaseClassifier(
-                    num_classes=n_classes,
-                    dropout_rate=params['dropout']
-                ).to(device)
-                
-                criterion = nn.CrossEntropyLoss()
-                optimizer = torch.optim.Adam(model.parameters(), lr=params['lr'])
-                
-                # Train and evaluate
-                for epoch in range(NUM_EPOCHS):
-                    train_loss = train_model(model, train_loader, criterion, optimizer, device)
-                    logging.info(f"Fold {fold + 1}, Epoch {epoch + 1}/{NUM_EPOCHS}, Train Loss: {train_loss:.4f}")
-                
-                val_loss, predictions, true_labels = evaluate_fold(model, val_loader, criterion, device)
-                
-                # Compute metrics for current fold
-                metrics = compute_fold_metrics(predictions, true_labels, train_dataset.classes)
-                metrics['fold'] = fold + 1
-                metrics['val_loss'] = val_loss
-                metrics['class_names'] = train_dataset.classes
-                fold_metrics.append(metrics)
-            
-            # Calculate average F1 score across folds
-            avg_f1 = np.mean([np.mean(m['f1']) for m in fold_metrics])
-            
-            # Update best parameters if needed
-            if avg_f1 > best_f1:
-                best_f1 = avg_f1
-                best_params = params
-                best_metrics = fold_metrics
-                
-                # Save best metrics so far
-                save_metrics(fold_metrics, script_dir / "outputs" / "evaluation_results_tuned.json")
-                
-            logging.info(f"Average F1 score for parameters {params}: {avg_f1:.4f}")
+        # Save and plot final results
+        save_metrics(fold_metrics, script_dir / "outputs" / "evaluation_results.json")
+        plot_aggregated_metrics(fold_metrics, script_dir / "outputs")
         
-        logging.info(f"\nBest parameters found: {best_params}")
-        logging.info(f"Best average F1 score: {best_f1:.4f}")
-        
-        # Plot results for best parameters
-        plot_aggregated_metrics(best_metrics, script_dir / "outputs")
+        logging.info("\nEvaluation completed successfully!")
         
     except Exception as e:
         logging.error(f"Error during evaluation: {str(e)}")
