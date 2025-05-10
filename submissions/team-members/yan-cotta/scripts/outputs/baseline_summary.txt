@@ -8,6 +8,8 @@ Baseline Performance (Step 2)
   - Rice___Healthy underperforms despite high samples (~1488), likely due to confusion with other rice diseases.
   - Validation loss (~0.487) indicates underfitting; more epochs or tuning needed.
   - Confusion matrices show misclassifications, especially among rice classes.
+- Visualizations:
+  - Generated aggregated_class_metrics.png to visualize class-wise performance.
 - Next Steps:
   - Address class imbalance with oversampling (Step 3).
   - Enhance data augmentation (Step 4).
