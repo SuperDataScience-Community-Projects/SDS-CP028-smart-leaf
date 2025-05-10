@@ -6,6 +6,7 @@ Performs k-fold cross-validation and generates detailed performance metrics.
 import os
 import sys
 import logging
+import json  # Added import
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -39,6 +40,7 @@ BATCH_SIZE = 16
 NUM_WORKERS = 2
 NUM_FOLDS = 5
 NUM_EPOCHS = 3
+SAMPLING_FACTOR = 0.5  # Added to balance oversampling
 
 # Set random seeds for reproducibility
 np.random.seed(RANDOM_SEED)
@@ -181,7 +183,7 @@ def compute_fold_metrics(predictions, true_labels, class_names):
 def save_metrics(fold_metrics, file_path):
     """Save metrics to a JSON file."""
     with open(file_path, 'w') as f:
-        json.dump(fold_metrics, f)
+        json.dump(fold_metrics, f, indent=4)  # Added indent for readability
 
 def plot_aggregated_metrics(fold_metrics, output_dir):
     """Plot aggregated metrics across folds."""
@@ -225,7 +227,7 @@ def main():
         class_counts = torch.bincount(labels)
         sample_weights = torch.zeros(len(labels))
         for i, label in enumerate(labels):
-            sample_weights[i] = 1.0 / class_counts[label]
+            sample_weights[i] = SAMPLING_FACTOR / class_counts[label]  # Adjusted with SAMPLING_FACTOR
         
         for fold, (train_idx, val_idx) in enumerate(skf.split(np.zeros(len(labels)), labels)):
             logging.info(f"\nProcessing fold {fold + 1}/{NUM_FOLDS}")
@@ -253,8 +255,8 @@ def main():
             
             # Initialize model
             model = LeafDiseaseClassifier(num_classes=n_classes).to(device)
-            criterion = nn.CrossEntropyLoss(weight=compute_class_weights(train_dataset).to(device))
-            optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+            criterion = nn.CrossEntropyLoss()  # Removed class weights to avoid overcorrection
+            optimizer = torch.optim.Adam(model.parameters(), lr=0.0005)  # Reduced LR for stability
             
             # Train the model
             for epoch in range(NUM_EPOCHS):
