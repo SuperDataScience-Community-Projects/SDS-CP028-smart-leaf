@@ -86,8 +86,10 @@ def compute_class_weights(dataset) -> torch.Tensor:
     """
     targets = torch.tensor([label for _, label in dataset])
     class_counts = torch.bincount(targets)
-    total_samples = len(targets)
-    return total_samples / (len(class_counts) * class_counts.float())
+    total_samples = len(dataset)
+    num_classes = len(class_counts)
+    weights = total_samples / (num_classes * class_counts.float())
+    return weights
 
 def compute_fold_metrics(predictions: np.ndarray, true_labels: np.ndarray, class_names: List[str]) -> Dict:
     """Compute performance metrics for a single fold.
