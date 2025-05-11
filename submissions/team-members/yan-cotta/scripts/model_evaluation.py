@@ -281,6 +281,10 @@ def main():
     try:
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         logging.info(f"Using device: {device}")
+        if device.type == 'cuda':
+            logging.info(f"GPU Name: {torch.cuda.get_device_name(0)}")
+        else:
+            logging.warning("GPU not available, running on CPU")
         
         # Load datasets
         script_dir = Path(__file__).parent
