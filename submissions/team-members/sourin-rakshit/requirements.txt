@@ -1,23 +1,9 @@
-# Core Python packages
-numpy
-pandas
-scikit-learn
-
-# PyTorch for deep learning
-torch
-torchvision
-torchaudio
-
-# Image processing
-Pillow
-opencv-python
-
-# Visualization and debugging
-matplotlib
-seaborn
-
-# Utility
-tqdm
-
-# Optional: Streamlit for visualization/UI
-streamlit
+numpy>=1.21
+tqdm>=4.64
+Pillow>=9.2
+kagglehub>=0.3.12
+torch>=1.13
+torchvision>=0.14
+scikit-learn>=1.1
+seaborn>=0.11
+matplotlib>=3.5
