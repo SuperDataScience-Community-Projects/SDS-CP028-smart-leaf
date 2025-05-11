@@ -295,3 +295,27 @@ Processing fold 5/5
 2025-05-10 15:11:41,355 - INFO - Fold 5, Epoch 10/10, Train Loss: 0.3315
 2025-05-10 15:11:56,950 - INFO - 
 Evaluation completed successfully!
+2025-05-11 13:15:38,367 - INFO - Using device: cuda
+2025-05-11 13:15:38,368 - INFO - GPU Name: AMD Radeon Graphics
+2025-05-11 13:15:38,398 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-11 13:17:47,268 - ERROR - Error during evaluation: HIP error: invalid device function
+HIP kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing AMD_SERIALIZE_KERNEL=3
+Compile with `TORCH_USE_HIP_DSA` to enable device-side assertions.
+
+2025-05-11 13:19:38,941 - INFO - Using device: cuda
+2025-05-11 13:19:38,942 - INFO - GPU Name: AMD Radeon Graphics
+2025-05-11 13:19:38,972 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-11 13:21:51,858 - ERROR - Error during evaluation: HIP error: invalid device function
+HIP kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing AMD_SERIALIZE_KERNEL=3
+Compile with `TORCH_USE_HIP_DSA` to enable device-side assertions.
+
+2025-05-11 13:40:39,379 - INFO - Using device: cuda
+2025-05-11 13:40:39,380 - INFO - GPU Name: AMD Radeon Graphics
+2025-05-11 13:40:39,409 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-11 13:42:56,840 - ERROR - Error during evaluation: HIP error: invalid device function
+HIP kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing AMD_SERIALIZE_KERNEL=3
+Compile with `TORCH_USE_HIP_DSA` to enable device-side assertions.
+
