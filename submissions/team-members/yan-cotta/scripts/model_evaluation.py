@@ -50,10 +50,6 @@ DROPOUT_RATE = 0.3
 # Set random seeds for reproducibility
 np.random.seed(RANDOM_SEED)
 torch.manual_seed(RANDOM_SEED)
-if torch.cuda.is_available():
-    torch.cuda.manual_seed(RANDOM_SEED)
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
 
 def load_datasets(data_dir: Path) -> tuple[datasets.ImageFolder, datasets.ImageFolder]:
     """Load datasets with different transforms for training and validation."""
@@ -279,7 +275,7 @@ def plot_aggregated_metrics(fold_metrics, output_dir):
 def main():
     """Run model evaluation with k-fold cross validation and hyperparameter tuning."""
     try:
-        device = torch.device('cpu')
+        device = torch.device('cpu')  # Explicitly set to CPU
         logging.info(f"Using device: {device}")
         
         # Load datasets
