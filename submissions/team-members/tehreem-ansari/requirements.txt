@@ -1,0 +1,4 @@
+1. Python 3.10
+2. Keras
+3. Matplotlib
+4. Tensor flow 

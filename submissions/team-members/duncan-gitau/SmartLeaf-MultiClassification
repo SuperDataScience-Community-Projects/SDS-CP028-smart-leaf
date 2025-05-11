@@ -1,0 +1,91 @@
+#%% packages
+import torch
+import torchvision
+import torchvision.transforms as transforms
+import torch.nn as nn
+import torch.nn.functional as F
+import os
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.metrics import accuracy_score, confusion_matrix
+os.getcwd()
+
+# %% transform and load data
+transform = transforms.Compose([
+   transforms.Resize((32,32)),
+   transforms.Grayscale(num_output_channels=1),
+   transforms.RandomVerticalFlip(),
+   transforms.ToTensor(),
+   transforms.Normalize((0.5,),(0.5))
+
+])
+
+batch_size = 4
+
+# Create datasets
+train_dataset = torchvision.datasets.ImageFolder(root='SmartLeaf_dataset/train', transform=transform)
+test_dataset = torchvision.datasets.ImageFolder(root='SmartLeaf_dataset/test', transform=transform)
+eval_dataset = torchvision.datasets.ImageFolder(root='SmartLeaf_dataset/val', transform=transform)
+
+# Create loaders
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+eval_loader = torch.utils.data.DataLoader(eval_dataset, batch_size=batch_size, shuffle=False)
+
+# %%
+CLASSES = ['Corn___Common_Rust', 'Corn___Gray_Leaf_Spot', 'Corn___Healthy','Corn___Northern_Leaf_Blight',
+           'Potato___Early_Blight','Potato___Healthy','Potato___Late_Blight','Rice___Brown_Spot','Rice___Healthy',
+           'Rice___Leaf_Blast','Rice___Neck_Blast','Wheat___Brown_Rust','Wheat___Healthy','Wheat___Yellow_Rust',
+        ]
+NUM_CLASSES = len(CLASSES)
+
+class ImageMulticlassClassificationNet(nn.Module):
+    def __init__(self) -> None:
+        super().__init__()
+        self.conv1 = nn.Conv2d(1, 16, 3)  #out BS , 16, 30,30
+        self.Maxpool1 = nn.MaxPool2d(2, 2)   #out BS , 16, 15,15
+        self.conv2 = nn.Conv2d(16, 32, 3) #out BS , 32, 13,13
+        self.MaxPool2 = nn.MaxPool2d(2,2) #out BS , 32, 6,6
+        self.fc1 = nn.Linear(32*6*6, 128) # out: (BS, 128)
+        self.fc2 = nn.Linear(128, 64)
+        self.fc3 = nn.Linear(64, NUM_CLASSES)
+        self.relu = nn.ReLU()
+        self.softmax = nn.Softmax(dim=1)
+    
+    def forward(self, x):
+        x = self.conv1(x) # out: (BS, 16, 30, 30)
+        x = self.relu(x)
+        x = self.Maxpool1(x) # out: (BS, 16, 15, 15)
+        x = self.conv2(x) # out: (BS, 32, 13, 13)
+        x = self.relu(x)
+        x = self.MaxPool2(x) # out: (BS, 32, 6, 6)
+        x = x = torch.flatten(x, 1)   #Out after  BS, 32*6*6
+        x = self.fc1(x)     # BS ,128
+        x = self.relu(x)
+        x = self.fc2(x)     # BS, 64
+        x = self.relu(x)
+        x = self.fc3(x)     #BS , NUM_CLASSES
+        x = self.softmax(x)
+        return x
+
+#input = torch.rand(1, 1, 32, 32) # BS, C, H, W
+model = ImageMulticlassClassificationNet()      
+#print(model(input).shape)
+
+# %% 
+loss_fn = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters())
+# %% training
+NUM_EPOCHS = 10
+for epoch in range(NUM_EPOCHS):
+    for i, data in enumerate(train_loader, 0):
+       inputs, labels = data
+       optimizer.zero_grad()
+       outputs = model(inputs)
+
+        
+       loss = loss_fn(outputs, labels)
+       loss.backward()
+       optimizer.step()
+    
+    print(f'Epoch {epoch}/{NUM_EPOCHS}, Loss: {loss.item():.4f}')

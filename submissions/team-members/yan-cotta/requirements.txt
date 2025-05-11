@@ -1,0 +1,9 @@
+# Contains all libraries that are needed for this project
+
+Pillow
+kaggle
+matplotlib
+numpy
+split-folders
+torch
+torchvision
