@@ -279,12 +279,8 @@ def plot_aggregated_metrics(fold_metrics, output_dir):
 def main():
     """Run model evaluation with k-fold cross validation and hyperparameter tuning."""
     try:
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        device = torch.device('cpu')
         logging.info(f"Using device: {device}")
-        if device.type == 'cuda':
-            logging.info(f"GPU Name: {torch.cuda.get_device_name(0)}")
-        else:
-            logging.warning("GPU not available, running on CPU")
         
         # Load datasets
         script_dir = Path(__file__).parent
@@ -363,7 +359,7 @@ def main():
                 val_loss, val_predictions, val_labels = evaluate_fold(model, val_loader, criterion, device)
                 
                 logging.info(f"Fold {fold + 1}, Epoch {epoch + 1}/{NUM_EPOCHS}, "
-                           f"Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}")
+                        f"Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}")
                 
                 # Save best model
                 if val_loss < best_val_loss:
