@@ -1,124 +1,47 @@
 # 🌿 Smart Leaf: Multi-Crop Disease Detection
 
-This project uses deep learning to classify plant leaf diseases across **four major crops** — **Corn, Potato, Rice, and Wheat** — covering **14 distinct disease and healthy classes**.  
-
-The final model was trained on over **13,000 images** and achieved strong performance on a balanced test set using a fully custom-built convolutional neural network (CNN).
-
----
-
-## 📊 Classes
-
-| Crop    | Classes                                      |
-|---------|----------------------------------------------|
-| Corn    | Common Rust, Gray Leaf Spot, Northern Leaf Blight, Healthy |
-| Potato  | Early Blight, Late Blight, Healthy           |
-| Rice    | Brown Spot, Leaf Blast, Neck Blast, Healthy  |
-| Wheat   | Brown Rust, Yellow Rust, Healthy             |
-
----
-
-## 🧠 Model Development
-
-We trained and evaluated multiple models, culminating in a custom CNN (Attempt 4) with:
-
-- 🏗️ 3 Convolutional blocks with BatchNorm, Dropout, and L2 regularization  
-- 📉 Learning rate reduction & early stopping  
-- 🎯 Final test accuracy: **~87.2%**  
-
-Model architecture and training were completed in **Google Colab**, and Gradio was used to prototype deployment.
-
----
-# 🌿 Smart Leaf: Multi-Crop Disease Detection
-
-This project uses deep learning to classify plant leaf diseases across **four major crops** — **Corn, Potato, Rice, and Wheat** — covering **14 distinct disease and healthy classes**.  
-
-The final model was trained on over **13,000 images** and achieved strong performance on a balanced test set using a fully custom-built convolutional neural network (CNN).
-
----
-
-## 📊 Classes
-
-| Crop    | Classes                                      |
-|---------|----------------------------------------------|
-| Corn    | Common Rust, Gray Leaf Spot, Northern Leaf Blight, Healthy |
-| Potato  | Early Blight, Late Blight, Healthy           |
-| Rice    | Brown Spot, Leaf Blast, Neck Blast, Healthy  |
-| Wheat   | Brown Rust, Yellow Rust, Healthy             |
-
----
-
-## 🧠 Model Development
-
-We trained and evaluated multiple models, culminating in a custom CNN (Attempt 4) with:
-
-- 🏗️ 3 Convolutional blocks with BatchNorm, Dropout, and L2 regularization  
-- 📉 Learning rate reduction & early stopping  
-- 🎯 Final test accuracy: **~87.2%**  
-
-Model architecture and training were completed in **Google Colab**, and Gradio was used to prototype deployment.
+This project uses deep learning to classify plant leaf diseases across four major crops — Corn, Potato, Rice, and Wheat — covering 14 distinct disease and healthy classes.
 
 ---
 
 ## 📁 Files Included
 
 - `chiti_nkhuwa_smart_leaf_Model.keras` — trained Keras model  
-- `chiti-nkhuwa-smart-leaf-project.ipynb` — Colab notebook with EDA, model building & evaluation  
-- `README.md` — this file  
+- `chiti_nkhuwa_smart_leaf_project.ipynb` — Colab notebook with EDA, model building & evaluation  
+- `app.py` — Gradio web interface to run the model  
+- `requirements.txt` — required libraries for deployment  
+- `README.md` — this file
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Deployment
 
-To run predictions using the model:
+To run the Smart Leaf Gradio app locally:
 
-1. Install required libraries:
-   ```bash
-   pip install tensorflow numpy pillow
-# 🌿 Smart Leaf: Multi-Crop Disease Detection
+### 1. Clone the repository and navigate to the folder
 
-This project uses deep learning to classify plant leaf diseases across **four major crops** — **Corn, Potato, Rice, and Wheat** — covering **14 distinct disease and healthy classes**.  
+```bash
+git clone https://github.com/ChitiNkhuwa/SDS-CP028-smart-leaf.git
+cd SDS-CP028-smart-leaf/chiti-nkhuwa
+```
 
-The final model was trained on over **13,000 images** and achieved strong performance on a balanced test set using a fully custom-built convolutional neural network (CNN).
+### 2. Install required dependencies
 
----
+```bash
+pip install -r requirements.txt
+```
 
-## 📊 Classes
+### 3. Launch the Gradio app
 
-| Crop    | Classes                                      |
-|---------|----------------------------------------------|
-| Corn    | Common Rust, Gray Leaf Spot, Northern Leaf Blight, Healthy |
-| Potato  | Early Blight, Late Blight, Healthy           |
-| Rice    | Brown Spot, Leaf Blast, Neck Blast, Healthy  |
-| Wheat   | Brown Rust, Yellow Rust, Healthy             |
+```bash
+python app.py
+```
 
----
-
-## 🧠 Model Development
-
-We trained and evaluated multiple models, culminating in a custom CNN (Attempt 4) with:
-
-- 🏗️ 3 Convolutional blocks with BatchNorm, Dropout, and L2 regularization  
-- 📉 Learning rate reduction & early stopping  
-- 🎯 Final test accuracy: **~87.2%**  
-
-Model architecture and training were completed in **Google Colab**, and Gradio was used to prototype deployment.
+This will launch a browser-based interface at a local address (e.g. http://127.0.0.1:7860) and a public Gradio share link.
 
 ---
 
-## 📁 Files Included
+## 🖼️ Preview
 
-- `chiti_nkhuwa_smart_leaf_Model.keras` — trained Keras model  
-- `chiti-nkhuwa-smart-leaf-project.ipynb` — Colab notebook with EDA, model building & evaluation  
-- `README.md` — this file  
-
----
-
-## 🚀 Getting Started
-
-To run predictions using the model:
-
-1. Install required libraries:
-   ```bash
-   pip install tensorflow numpy pillow
-
+<img width="1277" alt="Screenshot 2025-05-16 at 3 48 36 PM" src="https://github.com/user-attachments/assets/cd62eecd-5d0c-4b06-a15e-62fa66f91ba8" />
 
