@@ -319,3 +319,17 @@ HIP kernel errors might be asynchronously reported at some other API call, so th
 For debugging consider passing AMD_SERIALIZE_KERNEL=3
 Compile with `TORCH_USE_HIP_DSA` to enable device-side assertions.
 
+2025-05-14 15:38:50,609 - INFO - Using device: cpu
+2025-05-14 15:38:50,640 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-14 15:41:04,177 - INFO - Class weights: tensor([0.7804, 1.8134, 0.8006, 0.9445, 0.9303, 6.1203, 0.9303, 1.5176, 0.6252,
+        0.9522, 0.9303, 1.0314, 0.8336, 1.0068])
+2025-05-14 15:45:18,242 - INFO - 
+Processing fold 1/5
+2025-05-14 15:45:21,253 - INFO - Applying SMOTE oversampling to training data...
+2025-05-14 15:46:56,120 - INFO - Using device: cpu
+2025-05-14 15:46:56,151 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-14 15:49:18,168 - INFO - Class weights: tensor([0.7804, 1.8134, 0.8006, 0.9445, 0.9303, 6.1203, 0.9303, 1.5176, 0.6252,
+        0.9522, 0.9303, 1.0314, 0.8336, 1.0068])
+2025-05-14 15:54:00,583 - INFO - 
+Processing fold 1/5
+2025-05-14 15:54:02,745 - INFO - Applying SMOTE oversampling to training data...
