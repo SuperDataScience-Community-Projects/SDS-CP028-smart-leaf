@@ -14,6 +14,19 @@ This project uses deep learning to classify plant leaf diseases across four majo
 
 ---
 
+## 📒 Notebook Summary
+
+The notebook walks through:
+
+- Data cleaning and preprocessing
+- Image resizing and augmentation
+- Class imbalance visualization
+- Multiple model iterations
+- Use of callbacks (early stopping, learning rate scheduling)
+- Final training and evaluation (Test accuracy: ~87%)
+
+This notebook serves as both a reference and documentation of the model development process.
+
 ## 🚀 Deployment
 
 To run the Smart Leaf Gradio app locally:
