@@ -273,7 +273,7 @@ def plot_aggregated_metrics(fold_metrics, output_dir):
     plt.close()
 
 def main():
-    """Run model evaluation with k-fold cross validation and hyperparameter tuning."""
+    """Run model evaluation with k-fold cross validation."""
     try:
         device = torch.device('cpu')  # Explicitly set to CPU
         logging.info(f"Using device: {device}")
@@ -293,37 +293,16 @@ def main():
         labels = torch.tensor([label for _, label in train_dataset])
         fold_metrics = []
         
-        # Prepare full dataset as numpy arrays for SMOTE
-        all_data = []
-        for img, _ in train_dataset:
-            all_data.append(img.numpy().reshape(-1))  # Flatten the image
-        X = np.array(all_data)
-        y = labels.numpy()
-        
-        for fold, (train_idx, val_idx) in enumerate(skf.split(X, y)):
+        for fold, (train_idx, val_idx) in enumerate(skf.split(np.zeros(len(labels)), labels)):
             logging.info(f"\nProcessing fold {fold + 1}/{NUM_FOLDS}")
             
-            # Split data for this fold
-            X_train, y_train = X[train_idx], y[train_idx]
-            
-            # Apply SMOTE to training data
-            X_train_smote, y_train_smote = apply_smote(X_train, y_train)
-            
-            # Create SMOTE-augmented dataset
-            train_smote_dataset = SMOTEDataset(
-                X_train_smote, 
-                y_train_smote,
-                transform=train_dataset.transform
-            )
-            
-            # Create data loaders
+            # Create data loaders without SMOTE
             train_loader = DataLoader(
-                train_smote_dataset,
+                train_dataset,
                 batch_size=BATCH_SIZE,
-                shuffle=True,
+                sampler=SubsetRandomSampler(train_idx),
                 num_workers=NUM_WORKERS
             )
-            
             val_loader = DataLoader(
                 val_dataset,
                 batch_size=BATCH_SIZE,
@@ -342,9 +321,6 @@ def main():
             optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
             
             # Early stopping instance
-            early_stopping = EarlyStopping(patience=5, verbose=True)
-            
-            # Initialize early stopping
             early_stopping = EarlyStopping(patience=3, verbose=True)
             best_model_state = None
             best_val_loss = float('inf')
@@ -353,9 +329,8 @@ def main():
             for epoch in range(NUM_EPOCHS):
                 train_loss = train_model(model, train_loader, criterion, optimizer, device)
                 val_loss, val_predictions, val_labels = evaluate_fold(model, val_loader, criterion, device)
-                
                 logging.info(f"Fold {fold + 1}, Epoch {epoch + 1}/{NUM_EPOCHS}, "
-                        f"Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}")
+                            f"Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}")
                 
                 # Save best model
                 if val_loss < best_val_loss:
