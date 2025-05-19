@@ -16,10 +16,10 @@ import pandas as pd
 
 from torchvision import transforms
 
-def get_transforms():
+def get_transforms(img_size=(224, 224)):
     train_transforms = transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.RandomResizedCrop(224, scale=(0.8, 1.0)),
+        transforms.Resize(img_size),
+        transforms.RandomResizedCrop(img_size[0], scale=(0.8, 1.0)),
         transforms.RandomHorizontalFlip(),
         transforms.RandomVerticalFlip(),
         transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
@@ -28,11 +28,11 @@ def get_transforms():
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
     val_transforms = transforms.Compose([
-        transforms.Resize((224, 224)),
+        transforms.Resize(img_size),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
-    return train_transforms, val_transforms
+    return {'train': train_transforms, 'val': val_transforms}
 
 def verify_image_corruption(image_path: str) -> bool:
     """Verify if an image file is corrupted.
