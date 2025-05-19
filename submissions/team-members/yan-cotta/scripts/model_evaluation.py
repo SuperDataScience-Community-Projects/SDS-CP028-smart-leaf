@@ -137,12 +137,19 @@ def apply_smote(X_train: ArrayLike, y_train: ArrayLike, class_names: list, rando
     """Apply SMOTE oversampling to training data with targeted sampling strategy."""
     logging.info("Applying SMOTE oversampling to training data...")
     try:
-        # Define sampling strategy to balance specific minority classes (e.g., up to 500 samples)
-        sampling_strategy = {
-            class_names.index("Rice___Healthy"): 500,
-            class_names.index("Rice___Leaf_Blast"): 500,
-            class_names.index("Potato___Healthy"): 500
-        }
+        # Calculate current class counts
+        class_counts = np.bincount(y_train, minlength=len(class_names))
+        logging.info(f"Original class counts: {class_counts}")
+        
+        # Define target number of samples (at least 1.5x the original count, but at least 500)
+        sampling_strategy = {}
+        for class_name in ["Rice___Healthy", "Rice___Leaf_Blast", "Potato___Healthy"]:
+            class_idx = class_names.index(class_name)
+            original_count = class_counts[class_idx]
+            target_count = max(500, int(original_count * 1.5))  # Ensure target is >= original
+            sampling_strategy[class_idx] = target_count
+        
+        logging.info(f"SMOTE sampling strategy: {sampling_strategy}")
         smote = SMOTE(k_neighbors=3, sampling_strategy=sampling_strategy, random_state=random_state)
         X_resampled, y_resampled = smote.fit_resample(X_train, y_train)
         logging.info(f"SMOTE completed. New sample distribution: {np.bincount(y_resampled)}")
@@ -287,7 +294,7 @@ def main():
             
             criterion = nn.CrossEntropyLoss(weight=class_weights)
             optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=LEARNING_RATE)
-            scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=2, verbose=True)
+            scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=2)
             
             early_stopping = EarlyStopping(patience=3, verbose=True)
             best_model_state = None
@@ -298,7 +305,12 @@ def main():
                 val_loss, val_predictions, val_labels = evaluate_fold(model, val_loader, criterion, device)
                 logging.info(f"Fold {fold + 1}, Epoch {epoch + 1}/{NUM_EPOCHS}, Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}")
                 
+                # Manually log learning rate changes
+                current_lr = optimizer.param_groups[0]['lr']
                 scheduler.step(val_loss)
+                new_lr = optimizer.param_groups[0]['lr']
+                if new_lr != current_lr:
+                    logging.info(f"Learning rate reduced from {current_lr:.6f} to {new_lr:.6f}")
                 
                 if val_loss < best_val_loss:
                     best_val_loss = val_loss
