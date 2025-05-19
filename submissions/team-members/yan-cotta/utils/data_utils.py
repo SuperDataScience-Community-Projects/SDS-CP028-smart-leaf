@@ -14,8 +14,6 @@ from PIL import Image
 from sklearn.metrics import precision_recall_fscore_support, roc_auc_score
 import pandas as pd
 
-from torchvision import transforms
-
 def get_transforms(img_size=(224, 224)):
     train_transforms = transforms.Compose([
         transforms.Resize(img_size),
@@ -67,9 +65,15 @@ def plot_class_distribution(class_counts: Dict[str, int], output_path: str = 'cl
     plt.savefig(output_path)
     plt.close()
 
-def compute_class_weights(class_counts):
-    weights = 1.0 / (class_counts.float() ** 0.5)
-    weights = weights / weights.sum() * len(class_counts)
+def compute_class_weights(dataset):
+    """Compute class weights based on the dataset's class distribution."""
+    # Extract labels from the dataset
+    labels = [label for _, label in dataset]
+    num_classes = len(dataset.classes)
+    class_counts = torch.bincount(torch.tensor(labels), minlength=num_classes)
+    # Avoid division by zero by adding a small epsilon
+    weights = 1.0 / (class_counts.float() + 1e-6) ** 0.5
+    weights = weights / weights.sum() * num_classes
     return weights
 
 def compute_fold_metrics(predictions: np.ndarray, true_labels: np.ndarray, class_names: List[str]) -> Dict:
