@@ -127,9 +127,11 @@ class SMOTEDataset(torch.utils.data.Dataset):
         return len(self.labels)
     
     def __getitem__(self, idx):
-        feature = self.features[idx]
+        feature = self.features[idx].numpy()  # Convert to numpy array
         if self.transform:
+            # Reshape to image format (assuming CHW format after flattening)
             feature = feature.reshape(3, IMG_SIZE[0], IMG_SIZE[1])
+            feature = Image.fromarray((feature * 255).astype(np.uint8))  # Convert to PIL Image
             feature = self.transform(feature)
         return feature, self.labels[idx]
 
@@ -265,7 +267,7 @@ def main():
             X_train = []
             y_train = []
             for img, label in train_subset:
-                img_flat = img.flatten().numpy()  # Flatten image to 1D array
+                img_flat = img.numpy().flatten()  # Flatten numpy array directly
                 X_train.append(img_flat)
                 y_train.append(label)
             X_train = np.array(X_train)
