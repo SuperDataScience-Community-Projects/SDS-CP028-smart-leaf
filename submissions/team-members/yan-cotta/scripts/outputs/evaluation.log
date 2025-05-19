@@ -295,3 +295,312 @@ Processing fold 5/5
 2025-05-10 15:11:41,355 - INFO - Fold 5, Epoch 10/10, Train Loss: 0.3315
 2025-05-10 15:11:56,950 - INFO - 
 Evaluation completed successfully!
+2025-05-11 13:15:38,367 - INFO - Using device: cuda
+2025-05-11 13:15:38,368 - INFO - GPU Name: AMD Radeon Graphics
+2025-05-11 13:15:38,398 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-11 13:17:47,268 - ERROR - Error during evaluation: HIP error: invalid device function
+HIP kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing AMD_SERIALIZE_KERNEL=3
+Compile with `TORCH_USE_HIP_DSA` to enable device-side assertions.
+
+2025-05-11 13:19:38,941 - INFO - Using device: cuda
+2025-05-11 13:19:38,942 - INFO - GPU Name: AMD Radeon Graphics
+2025-05-11 13:19:38,972 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-11 13:21:51,858 - ERROR - Error during evaluation: HIP error: invalid device function
+HIP kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing AMD_SERIALIZE_KERNEL=3
+Compile with `TORCH_USE_HIP_DSA` to enable device-side assertions.
+
+2025-05-11 13:40:39,379 - INFO - Using device: cuda
+2025-05-11 13:40:39,380 - INFO - GPU Name: AMD Radeon Graphics
+2025-05-11 13:40:39,409 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-11 13:42:56,840 - ERROR - Error during evaluation: HIP error: invalid device function
+HIP kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing AMD_SERIALIZE_KERNEL=3
+Compile with `TORCH_USE_HIP_DSA` to enable device-side assertions.
+
+2025-05-14 15:38:50,609 - INFO - Using device: cpu
+2025-05-14 15:38:50,640 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-14 15:41:04,177 - INFO - Class weights: tensor([0.7804, 1.8134, 0.8006, 0.9445, 0.9303, 6.1203, 0.9303, 1.5176, 0.6252,
+        0.9522, 0.9303, 1.0314, 0.8336, 1.0068])
+2025-05-14 15:45:18,242 - INFO - 
+Processing fold 1/5
+2025-05-14 15:45:21,253 - INFO - Applying SMOTE oversampling to training data...
+2025-05-14 15:46:56,120 - INFO - Using device: cpu
+2025-05-14 15:46:56,151 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-14 15:49:18,168 - INFO - Class weights: tensor([0.7804, 1.8134, 0.8006, 0.9445, 0.9303, 6.1203, 0.9303, 1.5176, 0.6252,
+        0.9522, 0.9303, 1.0314, 0.8336, 1.0068])
+2025-05-14 15:54:00,583 - INFO - 
+Processing fold 1/5
+2025-05-14 15:54:02,745 - INFO - Applying SMOTE oversampling to training data...
+2025-05-16 15:44:21,630 - INFO - Using device: cpu
+2025-05-16 15:44:21,662 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-16 15:46:33,388 - INFO - Class weights: tensor([0.7804, 1.8134, 0.8006, 0.9445, 0.9303, 6.1203, 0.9303, 1.5176, 0.6252,
+        0.9522, 0.9303, 1.0314, 0.8336, 1.0068])
+2025-05-16 15:48:28,409 - INFO - 
+Processing fold 1/5
+2025-05-16 15:51:26,964 - INFO - Fold 1, Epoch 1/10, Train Loss: 1.0437, Val Loss: 0.8749
+2025-05-16 15:54:26,099 - INFO - Fold 1, Epoch 2/10, Train Loss: 0.7337, Val Loss: 0.8232
+2025-05-16 15:57:25,758 - INFO - Fold 1, Epoch 3/10, Train Loss: 0.6329, Val Loss: 0.6065
+2025-05-16 16:00:25,760 - INFO - Fold 1, Epoch 4/10, Train Loss: 0.5890, Val Loss: 0.4720
+2025-05-16 16:03:26,864 - INFO - Fold 1, Epoch 5/10, Train Loss: 0.5442, Val Loss: 1.0182
+2025-05-16 16:03:26,864 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-16 16:06:27,481 - INFO - Fold 1, Epoch 6/10, Train Loss: 0.5415, Val Loss: 0.4243
+2025-05-16 16:09:28,322 - INFO - Fold 1, Epoch 7/10, Train Loss: 0.5006, Val Loss: 0.3937
+2025-05-16 16:12:29,612 - INFO - Fold 1, Epoch 8/10, Train Loss: 0.5033, Val Loss: 0.8113
+2025-05-16 16:12:29,612 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-16 16:15:30,870 - INFO - Fold 1, Epoch 9/10, Train Loss: 0.4628, Val Loss: 0.8758
+2025-05-16 16:15:30,870 - INFO - EarlyStopping counter: 2 out of 3
+2025-05-16 16:18:31,967 - INFO - Fold 1, Epoch 10/10, Train Loss: 0.4482, Val Loss: 0.3968
+2025-05-16 16:18:31,967 - INFO - EarlyStopping counter: 3 out of 3
+2025-05-16 16:18:31,967 - INFO - Early stopping triggered at epoch 10
+2025-05-16 16:18:48,844 - INFO - 
+Processing fold 2/5
+2025-05-16 16:21:49,738 - INFO - Fold 2, Epoch 1/10, Train Loss: 1.0685, Val Loss: 0.7334
+2025-05-16 16:24:51,123 - INFO - Fold 2, Epoch 2/10, Train Loss: 0.7309, Val Loss: 0.7978
+2025-05-16 16:24:51,123 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-16 16:27:52,198 - INFO - Fold 2, Epoch 3/10, Train Loss: 0.6538, Val Loss: 0.5928
+2025-05-16 16:30:53,798 - INFO - Fold 2, Epoch 4/10, Train Loss: 0.5976, Val Loss: 0.6822
+2025-05-16 16:30:53,798 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-16 16:33:55,102 - INFO - Fold 2, Epoch 5/10, Train Loss: 0.5424, Val Loss: 0.4794
+2025-05-16 16:36:55,899 - INFO - Fold 2, Epoch 6/10, Train Loss: 0.5111, Val Loss: 0.4742
+2025-05-16 16:39:56,858 - INFO - Fold 2, Epoch 7/10, Train Loss: 0.5034, Val Loss: 0.4859
+2025-05-16 16:39:56,858 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-16 16:42:56,745 - INFO - Fold 2, Epoch 8/10, Train Loss: 0.4676, Val Loss: 0.3906
+2025-05-16 16:45:58,004 - INFO - Fold 2, Epoch 9/10, Train Loss: 0.4793, Val Loss: 0.5471
+2025-05-16 16:45:58,004 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-16 16:48:59,404 - INFO - Fold 2, Epoch 10/10, Train Loss: 0.4327, Val Loss: 0.4006
+2025-05-16 16:48:59,404 - INFO - EarlyStopping counter: 2 out of 3
+2025-05-16 16:49:15,942 - INFO - 
+Processing fold 3/5
+2025-05-16 16:52:17,422 - INFO - Fold 3, Epoch 1/10, Train Loss: 1.0578, Val Loss: 0.7636
+2025-05-16 16:55:18,185 - INFO - Fold 3, Epoch 2/10, Train Loss: 0.7401, Val Loss: 0.7094
+2025-05-16 16:58:19,159 - INFO - Fold 3, Epoch 3/10, Train Loss: 0.6549, Val Loss: 0.7575
+2025-05-16 16:58:19,159 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-16 17:01:20,441 - INFO - Fold 3, Epoch 4/10, Train Loss: 0.6138, Val Loss: 0.6865
+2025-05-16 17:04:20,845 - INFO - Fold 3, Epoch 5/10, Train Loss: 0.5510, Val Loss: 0.5081
+2025-05-16 17:07:21,828 - INFO - Fold 3, Epoch 6/10, Train Loss: 0.5074, Val Loss: 0.4790
+2025-05-16 17:10:22,742 - INFO - Fold 3, Epoch 7/10, Train Loss: 0.5055, Val Loss: 0.5665
+2025-05-16 17:10:22,742 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-16 17:13:24,347 - INFO - Fold 3, Epoch 8/10, Train Loss: 0.4789, Val Loss: 0.3926
+2025-05-16 17:16:25,233 - INFO - Fold 3, Epoch 9/10, Train Loss: 0.4577, Val Loss: 0.4281
+2025-05-16 17:16:25,233 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-16 17:19:25,664 - INFO - Fold 3, Epoch 10/10, Train Loss: 0.4735, Val Loss: 0.5650
+2025-05-16 17:19:25,664 - INFO - EarlyStopping counter: 2 out of 3
+2025-05-16 17:19:42,276 - INFO - 
+Processing fold 4/5
+2025-05-16 17:22:43,908 - INFO - Fold 4, Epoch 1/10, Train Loss: 1.0530, Val Loss: 0.7687
+2025-05-16 17:25:45,141 - INFO - Fold 4, Epoch 2/10, Train Loss: 0.7250, Val Loss: 0.7103
+2025-05-16 17:28:43,101 - INFO - Fold 4, Epoch 3/10, Train Loss: 0.6396, Val Loss: 0.5288
+2025-05-16 17:31:41,844 - INFO - Fold 4, Epoch 4/10, Train Loss: 0.5958, Val Loss: 0.5654
+2025-05-16 17:31:41,844 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-16 17:34:39,500 - INFO - Fold 4, Epoch 5/10, Train Loss: 0.5804, Val Loss: 0.4867
+2025-05-16 17:37:38,613 - INFO - Fold 4, Epoch 6/10, Train Loss: 0.5299, Val Loss: 0.4619
+2025-05-16 17:40:36,118 - INFO - Fold 4, Epoch 7/10, Train Loss: 0.5179, Val Loss: 0.4923
+2025-05-16 17:40:36,118 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-16 17:43:35,286 - INFO - Fold 4, Epoch 8/10, Train Loss: 0.4898, Val Loss: 1.4627
+2025-05-16 17:43:35,286 - INFO - EarlyStopping counter: 2 out of 3
+2025-05-16 17:46:33,220 - INFO - Fold 4, Epoch 9/10, Train Loss: 0.4814, Val Loss: 0.5132
+2025-05-16 17:46:33,220 - INFO - EarlyStopping counter: 3 out of 3
+2025-05-16 17:46:33,220 - INFO - Early stopping triggered at epoch 9
+2025-05-16 17:46:49,363 - INFO - 
+Processing fold 5/5
+2025-05-16 17:49:46,413 - INFO - Fold 5, Epoch 1/10, Train Loss: 1.0166, Val Loss: 0.7213
+2025-05-16 17:52:46,993 - INFO - Fold 5, Epoch 2/10, Train Loss: 0.7343, Val Loss: 0.5996
+2025-05-16 17:55:44,339 - INFO - Fold 5, Epoch 3/10, Train Loss: 0.6390, Val Loss: 0.5223
+2025-05-16 17:58:45,344 - INFO - Fold 5, Epoch 4/10, Train Loss: 0.5932, Val Loss: 0.6432
+2025-05-16 17:58:45,344 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-16 18:01:43,207 - INFO - Fold 5, Epoch 5/10, Train Loss: 0.5630, Val Loss: 0.6069
+2025-05-16 18:01:43,208 - INFO - EarlyStopping counter: 2 out of 3
+2025-05-16 18:04:42,133 - INFO - Fold 5, Epoch 6/10, Train Loss: 0.5258, Val Loss: 0.8772
+2025-05-16 18:04:42,133 - INFO - EarlyStopping counter: 3 out of 3
+2025-05-16 18:04:42,133 - INFO - Early stopping triggered at epoch 6
+2025-05-16 18:04:59,357 - INFO - 
+Evaluation completed successfully!
+2025-05-19 10:57:07,141 - INFO - Using device: cpu
+2025-05-19 10:57:07,142 - ERROR - Error during evaluation: get_transforms() got an unexpected keyword argument 'img_size'
+2025-05-19 10:58:47,253 - INFO - Using device: cpu
+2025-05-19 10:58:47,282 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-19 10:58:47,283 - ERROR - Error during evaluation: 'ImageFolder' object has no attribute 'float'
+2025-05-19 11:03:02,600 - INFO - Using device: cpu
+2025-05-19 11:03:02,629 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-19 11:05:09,894 - INFO - Class weights: tensor([0.8034, 1.2247, 0.8137, 0.8838, 0.8771, 2.2498, 0.8771, 1.1203, 0.7191,
+        0.8874, 0.8771, 0.9236, 0.8303, 0.9125])
+2025-05-19 11:07:12,626 - INFO - 
+Processing fold 1/5
+2025-05-19 11:09:00,235 - INFO - Applying SMOTE oversampling to training data...
+2025-05-19 11:09:00,444 - ERROR - Error during SMOTE: With over-sampling methods, the number of samples in a class should be greater or equal to the original number of samples. Originally, there is 1191 samples and 500 samples are asked.
+2025-05-19 11:09:00,444 - WARNING - Proceeding with original data due to SMOTE error
+2025-05-19 11:09:05,042 - ERROR - Error during evaluation: ReduceLROnPlateau.__init__() got an unexpected keyword argument 'verbose'
+2025-05-19 11:13:16,807 - INFO - Using device: cpu
+2025-05-19 11:13:16,836 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-19 11:15:28,998 - INFO - Class weights: tensor([0.8034, 1.2247, 0.8137, 0.8838, 0.8771, 2.2498, 0.8771, 1.1203, 0.7191,
+        0.8874, 0.8771, 0.9236, 0.8303, 0.9125])
+2025-05-19 11:17:30,443 - INFO - 
+Processing fold 1/5
+2025-05-19 11:19:17,920 - INFO - Applying SMOTE oversampling to training data...
+2025-05-19 11:19:17,920 - INFO - Original class counts: [ 953  411  929  788  800  122  800  490 1191  781  800  722  893  739]
+2025-05-19 11:19:17,920 - INFO - SMOTE sampling strategy: {8: 1786, 9: 1171, 5: 500}
+2025-05-19 11:19:37,256 - INFO - SMOTE completed. New sample distribution: [ 953  411  929  788  800  500  800  490 1786 1171  800  722  893  739]
+2025-05-19 11:19:37,858 - ERROR - Error during evaluation: Caught TypeError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/venv/lib/python3.12/site-packages/torch/utils/data/_utils/worker.py", line 349, in _worker_loop
+    data = fetcher.fetch(index)  # type: ignore[possibly-undefined]
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/venv/lib/python3.12/site-packages/torch/utils/data/_utils/fetch.py", line 52, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "/home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/scripts/model_evaluation.py", line 133, in __getitem__
+    feature = self.transform(feature)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/venv/lib/python3.12/site-packages/torchvision/transforms/transforms.py", line 95, in __call__
+    img = t(img)
+          ^^^^^^
+  File "/home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/venv/lib/python3.12/site-packages/torchvision/transforms/transforms.py", line 137, in __call__
+    return F.to_tensor(pic)
+           ^^^^^^^^^^^^^^^^
+  File "/home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/venv/lib/python3.12/site-packages/torchvision/transforms/functional.py", line 142, in to_tensor
+    raise TypeError(f"pic should be PIL Image or ndarray. Got {type(pic)}")
+TypeError: pic should be PIL Image or ndarray. Got <class 'torch.Tensor'>
+
+2025-05-19 12:13:59,026 - INFO - Using device: cpu
+2025-05-19 12:13:59,067 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-19 12:16:17,441 - INFO - Class weights: tensor([0.8034, 1.2247, 0.8137, 0.8838, 0.8771, 2.2498, 0.8771, 1.1203, 0.7191,
+        0.8874, 0.8771, 0.9236, 0.8303, 0.9125])
+2025-05-19 12:18:28,498 - INFO - 
+Processing fold 1/5
+2025-05-19 12:20:14,727 - INFO - Applying SMOTE oversampling to training data...
+2025-05-19 12:20:14,728 - INFO - Original class counts: [ 953  411  929  788  800  122  800  490 1191  781  800  722  893  739]
+2025-05-19 12:20:14,728 - INFO - SMOTE sampling strategy: {8: 1786, 9: 1171, 5: 500}
+2025-05-19 12:20:22,409 - INFO - SMOTE completed. New sample distribution: [ 953  411  929  788  800  500  800  490 1786 1171  800  722  893  739]
+2025-05-19 12:20:22,765 - ERROR - Error during evaluation: Caught NameError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/venv/lib/python3.12/site-packages/torch/utils/data/_utils/worker.py", line 349, in _worker_loop
+    data = fetcher.fetch(index)  # type: ignore[possibly-undefined]
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/venv/lib/python3.12/site-packages/torch/utils/data/_utils/fetch.py", line 52, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "/home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/scripts/model_evaluation.py", line 134, in __getitem__
+    feature = Image.fromarray((feature * 255).astype(np.uint8))  # Convert to PIL Image
+              ^^^^^
+NameError: name 'Image' is not defined
+
+2025-05-19 12:24:04,667 - INFO - Using device: cpu
+2025-05-19 12:24:04,696 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-19 12:26:20,559 - INFO - Class weights: tensor([0.8034, 1.2247, 0.8137, 0.8838, 0.8771, 2.2498, 0.8771, 1.1203, 0.7191,
+        0.8874, 0.8771, 0.9236, 0.8303, 0.9125])
+2025-05-19 12:28:30,865 - INFO - 
+Processing fold 1/5
+2025-05-19 12:30:19,089 - INFO - Applying SMOTE oversampling to training data...
+2025-05-19 12:30:19,089 - INFO - Original class counts: [ 953  411  929  788  800  122  800  490 1191  781  800  722  893  739]
+2025-05-19 12:30:19,089 - INFO - SMOTE sampling strategy: {8: 1786, 9: 1171, 5: 500}
+2025-05-19 12:30:26,481 - INFO - SMOTE completed. New sample distribution: [ 953  411  929  788  800  500  800  490 1786 1171  800  722  893  739]
+2025-05-19 12:30:26,821 - ERROR - Error during evaluation: Caught TypeError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/venv/lib/python3.12/site-packages/PIL/Image.py", line 3315, in fromarray
+    mode, rawmode = _fromarray_typemap[typekey]
+                    ~~~~~~~~~~~~~~~~~~^^^^^^^^^
+KeyError: ((1, 1, 224), '|u1')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/venv/lib/python3.12/site-packages/torch/utils/data/_utils/worker.py", line 349, in _worker_loop
+    data = fetcher.fetch(index)  # type: ignore[possibly-undefined]
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/venv/lib/python3.12/site-packages/torch/utils/data/_utils/fetch.py", line 52, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "/home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/scripts/model_evaluation.py", line 135, in __getitem__
+    feature = Image.fromarray((feature * 255).astype(np.uint8))  # Convert to PIL Image
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/venv/lib/python3.12/site-packages/PIL/Image.py", line 3319, in fromarray
+    raise TypeError(msg) from e
+TypeError: Cannot handle this data type: (1, 1, 224), |u1
+
+2025-05-19 12:36:28,596 - INFO - Using device: cpu
+2025-05-19 12:36:28,625 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-19 12:38:44,552 - INFO - Class weights: tensor([0.8034, 1.2247, 0.8137, 0.8838, 0.8771, 2.2498, 0.8771, 1.1203, 0.7191,
+        0.8874, 0.8771, 0.9236, 0.8303, 0.9125])
+2025-05-19 12:40:56,215 - INFO - 
+Processing fold 1/5
+2025-05-19 12:43:46,190 - INFO - Fold 1, Epoch 1/10, Train Loss: 0.3495, Val Loss: 0.2664
+2025-05-19 12:46:34,084 - INFO - Fold 1, Epoch 2/10, Train Loss: 0.2478, Val Loss: 0.2995
+2025-05-19 12:46:34,085 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-19 12:49:24,678 - INFO - Fold 1, Epoch 3/10, Train Loss: 0.2231, Val Loss: 0.2528
+2025-05-19 12:52:16,214 - INFO - Fold 1, Epoch 4/10, Train Loss: 0.1993, Val Loss: 0.2145
+2025-05-19 12:55:06,923 - INFO - Fold 1, Epoch 5/10, Train Loss: 0.1950, Val Loss: 0.2173
+2025-05-19 12:55:06,924 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-19 12:57:57,510 - INFO - Fold 1, Epoch 6/10, Train Loss: 0.1797, Val Loss: 0.1952
+2025-05-19 13:00:48,338 - INFO - Fold 1, Epoch 7/10, Train Loss: 0.1778, Val Loss: 0.1779
+2025-05-19 13:03:38,980 - INFO - Fold 1, Epoch 8/10, Train Loss: 0.1632, Val Loss: 0.1971
+2025-05-19 13:03:38,980 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-19 13:06:30,058 - INFO - Fold 1, Epoch 9/10, Train Loss: 0.1696, Val Loss: 0.1689
+2025-05-19 13:09:20,155 - INFO - Fold 1, Epoch 10/10, Train Loss: 0.1609, Val Loss: 0.1864
+2025-05-19 13:09:20,155 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-19 13:09:47,873 - INFO - 
+Processing fold 2/5
+2025-05-19 13:12:34,933 - INFO - Fold 2, Epoch 1/10, Train Loss: 0.3645, Val Loss: 0.2701
+2025-05-19 13:15:20,118 - INFO - Fold 2, Epoch 2/10, Train Loss: 0.2491, Val Loss: 0.3089
+2025-05-19 13:15:20,118 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-19 13:18:05,980 - INFO - Fold 2, Epoch 3/10, Train Loss: 0.2098, Val Loss: 0.1938
+2025-05-19 13:20:52,229 - INFO - Fold 2, Epoch 4/10, Train Loss: 0.1906, Val Loss: 0.2513
+2025-05-19 13:20:52,229 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-19 13:23:38,661 - INFO - Fold 2, Epoch 5/10, Train Loss: 0.1875, Val Loss: 0.2041
+2025-05-19 13:23:38,661 - INFO - EarlyStopping counter: 2 out of 3
+2025-05-19 13:26:24,601 - INFO - Fold 2, Epoch 6/10, Train Loss: 0.1790, Val Loss: 0.1978
+2025-05-19 13:26:24,601 - INFO - Learning rate reduced from 0.001000 to 0.000500
+2025-05-19 13:26:24,601 - INFO - EarlyStopping counter: 3 out of 3
+2025-05-19 13:26:24,602 - INFO - Early stopping triggered at epoch 6
+2025-05-19 13:26:52,108 - INFO - 
+Processing fold 3/5
+2025-05-19 13:29:26,537 - INFO - Fold 3, Epoch 1/10, Train Loss: 0.3459, Val Loss: 0.2892
+2025-05-19 13:32:01,445 - INFO - Fold 3, Epoch 2/10, Train Loss: 0.2363, Val Loss: 0.2098
+2025-05-19 13:34:34,871 - INFO - Fold 3, Epoch 3/10, Train Loss: 0.2148, Val Loss: 0.2175
+2025-05-19 13:34:34,871 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-19 13:37:08,585 - INFO - Fold 3, Epoch 4/10, Train Loss: 0.1948, Val Loss: 0.1911
+2025-05-19 13:39:41,141 - INFO - Fold 3, Epoch 5/10, Train Loss: 0.1859, Val Loss: 0.3382
+2025-05-19 13:39:41,141 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-19 13:42:14,905 - INFO - Fold 3, Epoch 6/10, Train Loss: 0.1793, Val Loss: 0.1997
+2025-05-19 13:42:14,905 - INFO - EarlyStopping counter: 2 out of 3
+2025-05-19 13:44:50,537 - INFO - Fold 3, Epoch 7/10, Train Loss: 0.1638, Val Loss: 0.1734
+2025-05-19 13:47:23,823 - INFO - Fold 3, Epoch 8/10, Train Loss: 0.1664, Val Loss: 0.1943
+2025-05-19 13:47:23,823 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-19 13:49:58,255 - INFO - Fold 3, Epoch 9/10, Train Loss: 0.1585, Val Loss: 0.1716
+2025-05-19 13:52:32,860 - INFO - Fold 3, Epoch 10/10, Train Loss: 0.1661, Val Loss: 0.1837
+2025-05-19 13:52:32,861 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-19 13:52:58,072 - INFO - 
+Processing fold 4/5
+2025-05-19 13:55:45,340 - INFO - Fold 4, Epoch 1/10, Train Loss: 0.3620, Val Loss: 0.3554
+2025-05-19 13:58:32,631 - INFO - Fold 4, Epoch 2/10, Train Loss: 0.2462, Val Loss: 0.2286
+2025-05-19 14:01:19,464 - INFO - Fold 4, Epoch 3/10, Train Loss: 0.2148, Val Loss: 0.1831
+2025-05-19 14:04:05,740 - INFO - Fold 4, Epoch 4/10, Train Loss: 0.2132, Val Loss: 0.1937
+2025-05-19 14:04:05,740 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-19 14:06:52,241 - INFO - Fold 4, Epoch 5/10, Train Loss: 0.1823, Val Loss: 0.2106
+2025-05-19 14:06:52,241 - INFO - EarlyStopping counter: 2 out of 3
+2025-05-19 14:09:40,108 - INFO - Fold 4, Epoch 6/10, Train Loss: 0.1850, Val Loss: 0.1895
+2025-05-19 14:09:40,108 - INFO - Learning rate reduced from 0.001000 to 0.000500
+2025-05-19 14:09:40,108 - INFO - EarlyStopping counter: 3 out of 3
+2025-05-19 14:09:40,108 - INFO - Early stopping triggered at epoch 6
+2025-05-19 14:10:06,835 - INFO - 
+Processing fold 5/5
+2025-05-19 14:12:48,044 - INFO - Fold 5, Epoch 1/10, Train Loss: 0.3465, Val Loss: 0.2601
+2025-05-19 14:15:29,042 - INFO - Fold 5, Epoch 2/10, Train Loss: 0.2360, Val Loss: 0.3089
+2025-05-19 14:15:29,042 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-19 14:18:10,224 - INFO - Fold 5, Epoch 3/10, Train Loss: 0.2144, Val Loss: 0.2171
+2025-05-19 14:20:51,470 - INFO - Fold 5, Epoch 4/10, Train Loss: 0.2091, Val Loss: 0.2271
+2025-05-19 14:20:51,470 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-19 14:23:33,114 - INFO - Fold 5, Epoch 5/10, Train Loss: 0.1865, Val Loss: 0.2130
+2025-05-19 14:26:13,848 - INFO - Fold 5, Epoch 6/10, Train Loss: 0.1706, Val Loss: 0.2042
+2025-05-19 14:28:55,017 - INFO - Fold 5, Epoch 7/10, Train Loss: 0.1686, Val Loss: 0.1920
+2025-05-19 14:31:35,992 - INFO - Fold 5, Epoch 8/10, Train Loss: 0.1648, Val Loss: 0.2066
+2025-05-19 14:31:35,992 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-19 14:34:17,160 - INFO - Fold 5, Epoch 9/10, Train Loss: 0.1713, Val Loss: 0.2390
+2025-05-19 14:34:17,160 - INFO - EarlyStopping counter: 2 out of 3
+2025-05-19 14:36:58,977 - INFO - Fold 5, Epoch 10/10, Train Loss: 0.1528, Val Loss: 0.2053
+2025-05-19 14:36:58,977 - INFO - Learning rate reduced from 0.001000 to 0.000500
+2025-05-19 14:36:58,977 - INFO - EarlyStopping counter: 3 out of 3
+2025-05-19 14:36:58,977 - INFO - Early stopping triggered at epoch 10
+2025-05-19 14:37:25,707 - INFO - 
+Evaluation completed successfully!

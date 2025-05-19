@@ -14,33 +14,22 @@ from PIL import Image
 from sklearn.metrics import precision_recall_fscore_support, roc_auc_score
 import pandas as pd
 
-def get_transforms(img_size: Tuple[int, int] = (224, 224)) -> Dict[str, transforms.Compose]:
-    """Get data transforms for training and validation/testing.
-    
-    Args:
-        img_size: Tuple of (height, width) for resizing images
-    
-    Returns:
-        Dictionary containing train and val transforms
-    """
+def get_transforms(img_size=(224, 224)):
     train_transforms = transforms.Compose([
         transforms.Resize(img_size),
-        transforms.RandomResizedCrop(img_size, scale=(0.8, 1.0)),
+        transforms.RandomResizedCrop(img_size[0], scale=(0.8, 1.0)),
         transforms.RandomHorizontalFlip(),
         transforms.RandomVerticalFlip(),
-        transforms.RandomRotation(30),  # Increased rotation angle
-        transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),  # Added hue adjustment
+        transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
+        transforms.RandomRotation(20),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-        transforms.RandomErasing(p=0.5, scale=(0.02, 0.33), ratio=(0.3, 3.3), value=0, inplace=False)  # Added random erasing
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
-    
     val_transforms = transforms.Compose([
         transforms.Resize(img_size),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
-    
     return {'train': train_transforms, 'val': val_transforms}
 
 def verify_image_corruption(image_path: str) -> bool:
@@ -76,20 +65,15 @@ def plot_class_distribution(class_counts: Dict[str, int], output_path: str = 'cl
     plt.savefig(output_path)
     plt.close()
 
-def compute_class_weights(dataset) -> torch.Tensor:
-    """Compute class weights for imbalanced dataset.
-    
-    Args:
-        dataset: PyTorch dataset with targets attribute
-        
-    Returns:
-        Tensor of class weights
-    """
-    targets = torch.tensor([label for _, label in dataset])
-    class_counts = torch.bincount(targets)
-    total_samples = len(dataset)
-    num_classes = len(class_counts)
-    weights = total_samples / (num_classes * class_counts.float())
+def compute_class_weights(dataset):
+    """Compute class weights based on the dataset's class distribution."""
+    # Extract labels from the dataset
+    labels = [label for _, label in dataset]
+    num_classes = len(dataset.classes)
+    class_counts = torch.bincount(torch.tensor(labels), minlength=num_classes)
+    # Avoid division by zero by adding a small epsilon
+    weights = 1.0 / (class_counts.float() + 1e-6) ** 0.5
+    weights = weights / weights.sum() * num_classes
     return weights
 
 def compute_fold_metrics(predictions: np.ndarray, true_labels: np.ndarray, class_names: List[str]) -> Dict:
