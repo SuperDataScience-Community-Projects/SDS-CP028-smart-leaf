@@ -9,13 +9,11 @@ import logging
 import json
 from pathlib import Path
 import numpy as np
-from numpy.typing import ArrayLike
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import precision_recall_fscore_support, roc_auc_score, confusion_matrix
-from imblearn.over_sampling import SMOTE
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, SubsetRandomSampler
@@ -115,51 +113,6 @@ class LeafDiseaseResNet(nn.Module):
 
     def forward(self, x):
         return self.model(x)
-
-class SMOTEDataset(torch.utils.data.Dataset):
-    """Custom Dataset for SMOTE-augmented data."""
-    def __init__(self, features: ArrayLike, labels: ArrayLike, transform=None):
-        self.features = torch.FloatTensor(features)
-        self.labels = torch.LongTensor(labels)
-        self.transform = transform
-        
-    def __len__(self):
-        return len(self.labels)
-    
-    def __getitem__(self, idx):
-        feature = self.features[idx].numpy()  # Convert to numpy array
-        if self.transform:
-            # Reshape to image format (assuming CHW format after flattening)
-            feature = feature.reshape(3, IMG_SIZE[0], IMG_SIZE[1])
-            feature = Image.fromarray((feature * 255).astype(np.uint8))  # Convert to PIL Image
-            feature = self.transform(feature)
-        return feature, self.labels[idx]
-
-def apply_smote(X_train: ArrayLike, y_train: ArrayLike, class_names: list, random_state: int = RANDOM_SEED) -> tuple[ArrayLike, ArrayLike]:
-    """Apply SMOTE oversampling to training data with targeted sampling strategy."""
-    logging.info("Applying SMOTE oversampling to training data...")
-    try:
-        # Calculate current class counts
-        class_counts = np.bincount(y_train, minlength=len(class_names))
-        logging.info(f"Original class counts: {class_counts}")
-        
-        # Define target number of samples (at least 1.5x the original count, but at least 500)
-        sampling_strategy = {}
-        for class_name in ["Rice___Healthy", "Rice___Leaf_Blast", "Potato___Healthy"]:
-            class_idx = class_names.index(class_name)
-            original_count = class_counts[class_idx]
-            target_count = max(500, int(original_count * 1.5))  # Ensure target is >= original
-            sampling_strategy[class_idx] = target_count
-        
-        logging.info(f"SMOTE sampling strategy: {sampling_strategy}")
-        smote = SMOTE(k_neighbors=3, sampling_strategy=sampling_strategy, random_state=random_state)
-        X_resampled, y_resampled = smote.fit_resample(X_train, y_train)
-        logging.info(f"SMOTE completed. New sample distribution: {np.bincount(y_resampled)}")
-        return X_resampled, y_resampled
-    except Exception as e:
-        logging.error(f"Error during SMOTE: {str(e)}")
-        logging.warning("Proceeding with original data due to SMOTE error")
-        return X_train, y_train
 
 def plot_confusion_matrix(cm, classes, fold, save_dir):
     """Plot confusion matrix for a fold."""
@@ -262,26 +215,11 @@ def main():
         for fold, (train_idx, val_idx) in enumerate(skf.split(np.zeros(len(labels)), labels)):
             logging.info(f"\nProcessing fold {fold + 1}/{NUM_FOLDS}")
             
-            # Prepare training data for SMOTE
-            train_subset = torch.utils.data.Subset(train_dataset, train_idx)
-            X_train = []
-            y_train = []
-            for img, label in train_subset:
-                img_flat = img.numpy().flatten()  # Flatten numpy array directly
-                X_train.append(img_flat)
-                y_train.append(label)
-            X_train = np.array(X_train)
-            y_train = np.array(y_train)
-            
-            # Apply SMOTE with targeted sampling
-            X_resampled, y_resampled = apply_smote(X_train, y_train, train_dataset.classes)
-            smote_dataset = SMOTEDataset(X_resampled, y_resampled, transform=train_dataset.transform)
-            
-            # Create data loaders
+            # Create data loaders without SMOTE
             train_loader = DataLoader(
-                smote_dataset,
+                train_dataset,
                 batch_size=BATCH_SIZE,
-                shuffle=True,
+                sampler=SubsetRandomSampler(train_idx),
                 num_workers=NUM_WORKERS
             )
             val_loader = DataLoader(
