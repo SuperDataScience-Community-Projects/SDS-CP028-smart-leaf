@@ -179,8 +179,6 @@ def main():
                 st.info(f"Confidence: {confidence*100:.2f}%")
                 
 
-                
-                
 
 if __name__ == "__main__":
     main()

@@ -28,6 +28,7 @@ CLASS_NAMES = [
 ]
 THRESHOLD = 0.8  # only show preds ≥ 80%
 
+
 # ── 2) TRANSFORMS ───────────────────────────────────────────────────────────
 # Inference transform (we'll apply it to each TTA crop)
 val_transform = transforms.Compose([
