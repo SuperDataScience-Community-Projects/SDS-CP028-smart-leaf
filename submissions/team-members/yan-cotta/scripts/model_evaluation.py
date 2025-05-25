@@ -1,6 +1,6 @@
 """
 Model evaluation script for the Smart Leaf Disease Classification project.
-Performs k-fold cross-validation and generates detailed performance metrics.
+Performs k-fold cross-validation, generates performance metrics, and includes t-SNE visualization.
 """
 
 import os
@@ -14,12 +14,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import precision_recall_fscore_support, roc_auc_score, confusion_matrix
+from sklearn.manifold import TSNE
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader, SubsetRandomSampler
-from torchvision import datasets
+from torch.utils.data import DataLoader, SubsetRandomSampler, Dataset
+from torchvision import datasets, transforms
 from torchvision.models import resnet18
 from torch.optim.lr_scheduler import ReduceLROnPlateau
+from PIL import Image
 
 # Add project root to sys.path
 sys.path.append(str(Path(__file__).parent.parent))
@@ -41,8 +43,8 @@ IMG_SIZE = (224, 224)
 BATCH_SIZE = 32
 NUM_WORKERS = 2
 NUM_FOLDS = 5
-NUM_EPOCHS = 10
-LEARNING_RATE = 0.001
+NUM_EPOCHS = 15  # Increased for better convergence
+LEARNING_RATE = 0.0001  # Reduced for finer tuning
 DROPOUT_RATE = 0.3
 
 # Set random seeds for reproducibility
@@ -50,10 +52,21 @@ np.random.seed(RANDOM_SEED)
 torch.manual_seed(RANDOM_SEED)
 
 def load_datasets(data_dir: Path) -> tuple[datasets.ImageFolder, datasets.ImageFolder]:
-    """Load datasets with different transforms for training and validation."""
-    transforms = get_transforms(img_size=IMG_SIZE)
-    train_dataset = datasets.ImageFolder(data_dir, transform=transforms['train'])
-    val_dataset = datasets.ImageFolder(data_dir, transform=transforms['val'])
+    """Load datasets with enhanced transforms for rice classes."""
+    transforms_dict = get_transforms(img_size=IMG_SIZE)
+    
+    # Enhanced augmentation for training, especially for rice classes
+    train_transforms = transforms.Compose([
+        transforms.Resize(IMG_SIZE),
+        transforms.RandomRotation(30),  # Added for rice class diversity
+        transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),  # Added for rice class diversity
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    ])
+    
+    train_dataset = datasets.ImageFolder(data_dir, transform=train_transforms)
+    val_dataset = datasets.ImageFolder(data_dir, transform=transforms_dict['val'])
     logging.info(f"Loaded datasets from {data_dir} with {len(train_dataset)} samples")
     return train_dataset, val_dataset
 
@@ -194,8 +207,49 @@ def plot_aggregated_metrics(fold_metrics, output_dir):
     plt.savefig(output_dir / 'aggregated_class_metrics.png')
     plt.close()
 
+def extract_features(model, dataloader, device):
+    """Extract features for t-SNE visualization."""
+    model.eval()
+    features = []
+    labels = []
+    with torch.no_grad():
+        for inputs, batch_labels in dataloader:
+            inputs = inputs.to(device)
+            outputs = model(inputs)
+            features.append(outputs.cpu().numpy())
+            labels.append(batch_labels.numpy())
+    features = np.concatenate(features, axis=0)
+    labels = np.concatenate(labels, axis=0)
+    return features, labels
+
+def plot_tsne(dataset, model, device, output_dir):
+    """Perform t-SNE visualization for rice classes."""
+    dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS)
+    features, labels = extract_features(model, dataloader, device)
+    
+    # Apply t-SNE
+    tsne = TSNE(n_components=2, random_state=RANDOM_SEED)
+    tsne_features = tsne.fit_transform(features)
+    
+    # Filter for rice classes
+    rice_classes = ["Rice___Healthy", "Rice___Leaf_Blast", "Rice___Brown_Spot"]
+    rice_indices = [i for i, label in enumerate(dataset.classes) if label in rice_classes]
+    rice_mask = np.isin(labels, rice_indices)
+    
+    plt.figure(figsize=(10, 8))
+    sns.scatterplot(
+        x=tsne_features[rice_mask, 0], 
+        y=tsne_features[rice_mask, 1], 
+        hue=[dataset.classes[label] for label in labels[rice_mask]], 
+        palette="viridis"
+    )
+    plt.title("t-SNE Visualization of Rice Classes")
+    plt.savefig(output_dir / "tsne_rice_classes.png")
+    plt.close()
+    logging.info("t-SNE visualization saved to outputs/tsne_rice_classes.png")
+
 def main():
-    """Run model evaluation with k-fold cross validation."""
+    """Run model evaluation with k-fold cross validation and t-SNE analysis."""
     try:
         device = torch.device('cpu')
         logging.info(f"Using device: {device}")
@@ -215,7 +269,6 @@ def main():
         for fold, (train_idx, val_idx) in enumerate(skf.split(np.zeros(len(labels)), labels)):
             logging.info(f"\nProcessing fold {fold + 1}/{NUM_FOLDS}")
             
-            # Create data loaders without SMOTE
             train_loader = DataLoader(
                 train_dataset,
                 batch_size=BATCH_SIZE,
@@ -245,7 +298,6 @@ def main():
                 val_loss, val_predictions, val_labels = evaluate_fold(model, val_loader, criterion, device)
                 logging.info(f"Fold {fold + 1}, Epoch {epoch + 1}/{NUM_EPOCHS}, Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}")
                 
-                # Manually log learning rate changes
                 current_lr = optimizer.param_groups[0]['lr']
                 scheduler.step(val_loss)
                 new_lr = optimizer.param_groups[0]['lr']
@@ -272,6 +324,10 @@ def main():
             
             cm = confusion_matrix(true_labels, predictions)
             plot_confusion_matrix(cm, train_dataset.classes, fold + 1, script_dir / "outputs")
+            
+            # Perform t-SNE visualization after the first fold
+            if fold == 0:
+                plot_tsne(train_dataset, model, device, script_dir / "outputs")
         
         save_metrics(fold_metrics, script_dir / "outputs" / "evaluation_results.json")
         plot_aggregated_metrics(fold_metrics, script_dir / "outputs")
