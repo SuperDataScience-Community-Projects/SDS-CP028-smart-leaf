@@ -29,3 +29,41 @@ Changes Made:
 Next Steps:
 - Investigate feature overlap in rice classes.
 - Consider data augmentation or additional samples for underperforming classes.
+
+UPDATE:
+
+Model Evaluation Summary (2025-05-19)
+
+Average F1 Score: 0.804 (improved from 0.7620)
+Average Validation Loss: 0.182 (improved from 0.4870)
+Fold-Specific Best Validation Losses:
+Fold 1: 0.1689
+Fold 2: 0.1938
+Fold 3: 0.1716
+Fold 4: 0.1831
+Fold 5: 0.1920
+
+
+
+Key Observations
+
+The model demonstrates significant improvement over the baseline, with a 0.042 increase in average F1 score and a 0.305 decrease in average validation loss.
+Strengths: High F1 scores (>0.95) for Corn___Healthy, Rice___Neck_Blast, Wheat___Healthy, and Wheat___Yellow_Rust.
+Weaknesses: Lower F1 scores for rice-related classes:
+Rice___Leaf_Blast: Average F1 ~0.64, often misclassified as Rice___Healthy or Rice___Brown_Spot.
+Rice___Brown_Spot: Average F1 ~0.65, frequently confused with Rice___Healthy.
+
+
+Training was stable across folds, with early stopping and learning rate adjustments applied to prevent overfitting.
+
+Changes Made
+
+Conducted 5-fold cross-validation on a dataset of 13,024 samples.
+Trained for 10 epochs per fold with class-weighted loss and early stopping.
+
+Next Steps
+
+Investigate feature overlap in rice classes to improve classification.
+Apply data augmentation for underperforming classes.
+Explore deeper architectures (e.g., ResNet50) or ensemble methods to boost performance.
+
