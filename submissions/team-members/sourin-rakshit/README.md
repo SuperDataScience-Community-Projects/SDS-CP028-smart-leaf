@@ -1,72 +1,101 @@
-# 🌾 Bangladeshi Crop Disease Classification using CNN
+# 🌾 SmartLeaf: Bangladeshi Crop Disease Classification using CNN
 
-This project focuses on building a convolutional neural network (CNN) model to classify Bangladeshi crop diseases using image data. The dataset was sourced from [Kaggle](https://www.kaggle.com/datasets/nafishamoin/new-bangladeshi-crop-disease), and PyTorch was used to develop and train the deep learning model.
+This project builds a convolutional neural network (CNN) using PyTorch to classify crop diseases in Bangladesh. The model leverages transfer learning with EfficientNetV2-S architecture to identify diseases across four major crops: **Corn, Potato, Rice, and Wheat**.
 
 ---
 
 ## 📂 Dataset
 
-The dataset is hosted on Kaggle and contains categorized images of crop diseases from Bangladesh.
+The dataset contains **13,024 images** of crop leaves categorized into **14 distinct classes** (including healthy and diseased states).
 
-- **Source**: [New Bangladeshi Crop Disease Dataset](https://www.kaggle.com/datasets/nafishamoin/new-bangladeshi-crop-disease)
-- **Download**: Automated via [`kagglehub`](https://github.com/KaggleHub/kagglehub)
+* **Source**: [New Bangladeshi Crop Disease Dataset](https://www.kaggle.com/datasets/nafishamoin/new-bangladeshi-crop-disease)
+* **Download Method**: Automated using [`kagglehub`](https://github.com/KaggleHub/kagglehub)
 
 ---
 
 ## 🧪 Model Architecture
 
-- CNN-based classification using pre-trained models (from `torchvision.models`)
-- Augmentation using PyTorch `transforms`
-- Adaptive learning rate with `ReduceLROnPlateau`
-- Evaluation with confusion matrix and classification report
-
----
-
-## 🧰 Tech Stack
-
-- Python
-- PyTorch
-- Torchvision
-- KaggleHub
-- Matplotlib, Seaborn
-- Scikit-learn
-- TQDM
-- Optuna
+* **EfficientNetV2-S** for transfer learning (pretrained on ImageNet).
+* Customized fully-connected layers for 14-class crop disease classification.
+* Adaptive learning rate adjustment using `ReduceLROnPlateau` scheduler.
+* Model evaluation through confusion matrix, accuracy, precision, recall, and F1-score metrics.
 
 ---
 
 ## 🖼️ Data Augmentation
 
-Applied only to the training set:
+Applied exclusively on the training dataset to enhance model generalization:
 
-- Random resized crops
-- Horizontal & vertical flips
-- Rotations & affine transformations
-- Perspective distortion
-- Color jittering
+* Random resized crops
+* Horizontal & vertical flips
+* Rotations & affine transformations
+* Perspective distortion
+* Color jittering (brightness, contrast, saturation, hue adjustments)
 
-Validation set is resized and normalized only.
+Validation data undergo resizing and normalization only.
 
 ---
 
 ## 🚀 Training Setup
 
-- Dataset is split into 80% training and 20% validation.
-- Data loaders use `num_workers=4` for faster loading.
-- Model runs on Apple Silicon using Metal backend if available (`mps` device).
+* Data split: 80% training / 20% validation.
+* Batch loading optimized with `num_workers=4`.
+* Compatible with GPU (`cuda`) and Apple Silicon (`mps`) for accelerated training.
 
 ---
 
-## 🔧 Requirements
+## 🧰 Tech Stack
 
-Install the required packages using the following command:
+* Python
+* PyTorch
+* Torchvision
+* KaggleHub
+* Matplotlib, Seaborn
+* Scikit-learn
+* TQDM
+* Optuna (for hyperparameter tuning)
+
+---
+
+## 🔧 Requirements & Installation
+
+Install necessary dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
+
+Ensure dataset download via `kagglehub`:
+
+```bash
+kagglehub datasets download nafishamoin/new-bangladeshi-crop-disease
+```
+
+---
+
+## 📈 Model Performance
+
+The trained model achieves:
+
+* **Accuracy:** \~95%
+* **Precision, Recall, F1-score:** \~92-95% across classes
+* Clearly visualized confusion matrix highlighting class-level performance.
+
+---
+
+## 🖥️ Usage
+
+Run training and evaluation by executing the notebook (`Sourin-Smart-Leaf-EfficientNet.py`).
+
+Launch the **Streamlit app** for real-time disease prediction:
+
+```bash
+streamlit run app.py
+```
+
 ---
 
 ## 📎 Acknowledgements
-Dataset by Nafisa Homaira Moin on Kaggle
 
-PyTorch and TorchVision for model development
+* Dataset provided by **Nafisa Homaira Moin** on Kaggle.
+* PyTorch and TorchVision libraries for model implementation.
