@@ -265,6 +265,8 @@ def main():
         skf = StratifiedKFold(n_splits=NUM_FOLDS, shuffle=True, random_state=RANDOM_SEED)
         labels = torch.tensor([label for _, label in train_dataset])
         fold_metrics = []
+        overall_best_val_loss = float('inf')
+        overall_best_model_state = None
         
         for fold, (train_idx, val_idx) in enumerate(skf.split(np.zeros(len(labels)), labels)):
             logging.info(f"\nProcessing fold {fold + 1}/{NUM_FOLDS}")
@@ -328,9 +330,22 @@ def main():
             # Perform t-SNE visualization after the first fold
             if fold == 0:
                 plot_tsne(train_dataset, model, device, script_dir / "outputs")
+
+            # Update overall best model
+            current_fold_best_loss = early_stopping.best_loss if early_stopping.best_loss is not None else val_loss
+            if current_fold_best_loss < overall_best_val_loss:
+                overall_best_val_loss = current_fold_best_loss
+                overall_best_model_state = model.state_dict().copy()
+                logging.info(f"New overall best model found in fold {fold + 1} with validation loss: {overall_best_val_loss:.4f}")
         
         save_metrics(fold_metrics, script_dir / "outputs" / "evaluation_results.json")
         plot_aggregated_metrics(fold_metrics, script_dir / "outputs")
+
+        if overall_best_model_state is not None:
+            save_path = script_dir / "outputs" / "best_leaf_disease_model.pth"
+            torch.save(overall_best_model_state, save_path)
+            logging.info(f"Overall best model saved to {save_path}")
+        
         logging.info("\nEvaluation completed successfully!")
     except Exception as e:
         logging.error(f"Error during evaluation: {str(e)}")
