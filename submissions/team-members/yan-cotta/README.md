@@ -3,7 +3,8 @@
 This project implements a deep learning solution for classifying crop diseases from leaf images, focusing on crops common in Bangladesh, such as corn, potato, rice, and wheat. The project leverages a convolutional neural network (CNN) to identify 14 disease classes, addressing challenges like class imbalance and image variability through robust preprocessing and optimization techniques.
 
 ## Project Structure
-```
+
+```bash
 .
 ├── dataset/                   # Raw dataset (gitignored)
 ├── dataset_organized/         # Reorganized dataset
@@ -43,11 +44,13 @@ This project implements a deep learning solution for classifying crop diseases f
 ## Progress (as of May 10, 2025)
 
 ### Step 1: Environment Setup
+
 - Configured a reproducible environment with requirements.txt and verify_setup.py
 - Ensured all dependencies (PyTorch, scikit-learn, imbalanced-learn, etc.) are installed
 - Set random seeds (RANDOM_SEED = 42) for reproducibility
 
 ### Step 2: Baseline Model Evaluation
+
 - Trained and evaluated a custom CNN (LeafDiseaseClassifier) using 5-fold cross-validation (3 epochs per fold)
 - Achieved an average F1-score of 0.739 and validation loss of 0.487
 - Identified strong classes (F1 > 0.9): Corn___Common_Rust, Corn___Healthy, Potato___Early_Blight, Potato___Late_Blight, Rice___Neck_Blast
@@ -243,6 +246,92 @@ To visualize predictions on your own leaf images, you can use the Streamlit appl
     ```
     This will typically open the application in your default web browser.
 
+## Running with Docker
+
+### Prerequisites
+- Docker installed on your system
+- Docker Compose (optional, for easy deployment)
+
+### Using Docker
+
+1. **Pull the image from Docker Hub**:
+```bash
+docker pull yancotta/smart-leaf:latest
+```
+
+2. **Run the container**:
+```bash
+docker run -d -p 8501:8501 yancotta/smart-leaf:latest
+```
+
+3. **Access the application**:
+Open your browser and navigate to `http://localhost:8501`
+
+### Building the Docker Image Locally
+
+1. **Clone the repository and navigate to the project directory**:
+```bash
+git clone https://github.com/YanCotta/SDS-CP028-smart-leaf.git
+cd SDS-CP028-smart-leaf/submissions/team-members/yan-cotta
+```
+
+2. **Build the Docker image**:
+```bash
+docker build -t smart-leaf .
+```
+
+3. **Run the container**:
+```bash
+docker run -d -p 8501:8501 smart-leaf
+```
+
+### Using Docker Compose
+
+1. **Start the application**:
+```bash
+docker-compose up -d
+```
+
+2. **Stop the application**:
+```bash
+docker-compose down
+```
+
+## Continuous Integration/Continuous Deployment (CI/CD)
+
+This project uses GitHub Actions for CI/CD. The workflow includes:
+
+- **Continuous Integration**:
+  - Automated testing
+  - Code quality checks
+  - Docker image building
+
+- **Continuous Deployment**:
+  - Automatic deployment to Docker Hub
+  - Release management
+
+### CI/CD Pipeline Details
+
+1. **On Pull Request**:
+   - Runs tests
+   - Checks code quality
+   - Builds Docker image
+   - Reports status
+
+2. **On Merge to Main**:
+   - Builds and tags Docker image
+   - Pushes to Docker Hub
+   - Creates release (if tagged)
+
+### Environment Variables Required for CI/CD
+
+The following secrets need to be set in your GitHub repository:
+- `DOCKER_USERNAME`: Docker Hub username
+- `DOCKER_PASSWORD`: Docker Hub access token
+- `DOCKER_REPO`: Docker Hub repository name
+
+To view the CI/CD workflow status, check the Actions tab in the GitHub repository.
+
 ## Output Files
 
 ### Data Analysis:
@@ -287,5 +376,5 @@ See requirements.txt for version details.
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
