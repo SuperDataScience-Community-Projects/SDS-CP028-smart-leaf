@@ -1,15 +1,13 @@
 # Project dependencies with version specifications
 
-torch
-torchvision
-numpy
-pandas
-matplotlib
-seaborn
-scikit-learn
-Pillow
-imbalanced-learn
-split-folders
-kaggle
-tqdm
-streamlit
+torch>=2.0.0
+torchvision>=0.15.0
+numpy>=1.24.0
+pandas>=2.0.0
+Pillow>=9.5.0
+streamlit>=1.22.0
+scikit-learn>=1.2.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+tqdm>=4.65.0
+requests>=2.31.0
