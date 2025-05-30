@@ -4,14 +4,20 @@ FROM pytorch/pytorch:2.0.1-cuda11.7-cudnn8-runtime
 # Set working directory
 WORKDIR /app
 
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    software-properties-common \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install system dependencies and Python packages
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/* \
-    && pip install --no-cache-dir -r requirements.txt
+# Install Python packages
+RUN pip install --no-cache-dir -r requirements.txt \
+    && rm -rf ~/.cache/pip/*
 
 # Copy the application code and model
 COPY . .
