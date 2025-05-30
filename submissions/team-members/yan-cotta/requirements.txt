@@ -12,3 +12,4 @@ imbalanced-learn
 split-folders
 kaggle
 tqdm
+streamlit
