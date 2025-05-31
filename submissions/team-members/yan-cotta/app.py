@@ -98,7 +98,7 @@ def run_app(model, device, transform):
         ### Smart Leaf Disease Classifier 🌿
         
         This application uses deep learning to detect diseases in:
-        - � Corn
+        - 🌽 Corn
         - 🥔 Potato
         - 🌾 Rice
         - 🌾 Wheat
