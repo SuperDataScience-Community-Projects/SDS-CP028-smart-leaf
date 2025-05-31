@@ -1,0 +1,46 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Dataset folders (mount these as volumes if needed)
+dataset/
+dataset_organized/
+split_dataset/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Temp files
+*.log
+*.csv
+*.json
+*.zip
+
+# Keep only the necessary model file
+scripts/outputs/*
+!scripts/outputs/best_leaf_disease_model.pth

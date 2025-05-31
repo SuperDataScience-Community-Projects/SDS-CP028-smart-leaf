@@ -711,3 +711,114 @@ Processing fold 5/5
 2025-05-25 19:44:47,651 - INFO - Early stopping triggered at epoch 6
 2025-05-25 19:45:14,777 - INFO - 
 Evaluation completed successfully!
+2025-05-30 16:54:38,629 - INFO - Using device: cpu
+2025-05-30 16:54:38,661 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-30 16:55:10,754 - INFO - Using device: cpu
+2025-05-30 16:55:10,783 - INFO - Loaded datasets from /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/dataset_organized with 13024 samples
+2025-05-30 16:57:03,356 - INFO - Class weights: tensor([0.8034, 1.2247, 0.8137, 0.8838, 0.8771, 2.2498, 0.8771, 1.1203, 0.7191,
+        0.8874, 0.8771, 0.9236, 0.8303, 0.9125])
+2025-05-30 16:58:41,887 - INFO - 
+Processing fold 1/5
+2025-05-30 17:01:37,058 - INFO - Fold 1, Epoch 1/15, Train Loss: 0.3234, Val Loss: 0.2018
+2025-05-30 17:04:29,513 - INFO - Fold 1, Epoch 2/15, Train Loss: 0.1778, Val Loss: 0.1980
+2025-05-30 17:07:23,044 - INFO - Fold 1, Epoch 3/15, Train Loss: 0.1513, Val Loss: 0.1674
+2025-05-30 17:10:09,988 - INFO - Fold 1, Epoch 4/15, Train Loss: 0.1357, Val Loss: 0.1698
+2025-05-30 17:10:09,988 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-30 17:12:57,082 - INFO - Fold 1, Epoch 5/15, Train Loss: 0.1231, Val Loss: 0.1641
+2025-05-30 17:15:49,148 - INFO - Fold 1, Epoch 6/15, Train Loss: 0.1187, Val Loss: 0.1666
+2025-05-30 17:15:49,148 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-30 17:18:38,059 - INFO - Fold 1, Epoch 7/15, Train Loss: 0.1106, Val Loss: 0.1616
+2025-05-30 17:21:26,301 - INFO - Fold 1, Epoch 8/15, Train Loss: 0.1045, Val Loss: 0.1562
+2025-05-30 17:24:15,308 - INFO - Fold 1, Epoch 9/15, Train Loss: 0.1012, Val Loss: 0.1528
+2025-05-30 17:27:02,268 - INFO - Fold 1, Epoch 10/15, Train Loss: 0.0952, Val Loss: 0.1467
+2025-05-30 17:29:51,935 - INFO - Fold 1, Epoch 11/15, Train Loss: 0.0938, Val Loss: 0.1652
+2025-05-30 17:29:51,935 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-30 17:32:41,807 - INFO - Fold 1, Epoch 12/15, Train Loss: 0.0874, Val Loss: 0.1302
+2025-05-30 17:35:30,118 - INFO - Fold 1, Epoch 13/15, Train Loss: 0.0875, Val Loss: 0.1514
+2025-05-30 17:35:30,118 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-30 17:38:17,856 - INFO - Fold 1, Epoch 14/15, Train Loss: 0.0831, Val Loss: 0.1583
+2025-05-30 17:38:17,856 - INFO - EarlyStopping counter: 2 out of 3
+2025-05-30 17:41:06,420 - INFO - Fold 1, Epoch 15/15, Train Loss: 0.0789, Val Loss: 0.1546
+2025-05-30 17:41:06,420 - INFO - Learning rate reduced from 0.000100 to 0.000050
+2025-05-30 17:41:06,420 - INFO - EarlyStopping counter: 3 out of 3
+2025-05-30 17:41:06,420 - INFO - Early stopping triggered at epoch 15
+2025-05-30 17:44:26,895 - INFO - t-SNE visualization saved to outputs/tsne_rice_classes.png
+2025-05-30 17:44:26,896 - INFO - New overall best model found in fold 1 with validation loss: 0.1302
+2025-05-30 17:44:26,896 - INFO - 
+Processing fold 2/5
+2025-05-30 17:47:10,455 - INFO - Fold 2, Epoch 1/15, Train Loss: 0.3327, Val Loss: 0.2228
+2025-05-30 17:49:55,364 - INFO - Fold 2, Epoch 2/15, Train Loss: 0.1802, Val Loss: 0.1794
+2025-05-30 17:52:36,993 - INFO - Fold 2, Epoch 3/15, Train Loss: 0.1462, Val Loss: 0.1670
+2025-05-30 17:55:17,662 - INFO - Fold 2, Epoch 4/15, Train Loss: 0.1368, Val Loss: 0.1772
+2025-05-30 17:55:17,662 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-30 17:57:58,252 - INFO - Fold 2, Epoch 5/15, Train Loss: 0.1289, Val Loss: 0.1679
+2025-05-30 17:57:58,252 - INFO - EarlyStopping counter: 2 out of 3
+2025-05-30 18:00:37,708 - INFO - Fold 2, Epoch 6/15, Train Loss: 0.1160, Val Loss: 0.1605
+2025-05-30 18:03:17,782 - INFO - Fold 2, Epoch 7/15, Train Loss: 0.1090, Val Loss: 0.1485
+2025-05-30 18:05:57,743 - INFO - Fold 2, Epoch 8/15, Train Loss: 0.1027, Val Loss: 0.1999
+2025-05-30 18:05:57,743 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-30 18:08:38,568 - INFO - Fold 2, Epoch 9/15, Train Loss: 0.0988, Val Loss: 0.1669
+2025-05-30 18:08:38,568 - INFO - EarlyStopping counter: 2 out of 3
+2025-05-30 18:11:18,301 - INFO - Fold 2, Epoch 10/15, Train Loss: 0.0992, Val Loss: 0.1967
+2025-05-30 18:11:18,301 - INFO - Learning rate reduced from 0.000100 to 0.000050
+2025-05-30 18:11:18,301 - INFO - EarlyStopping counter: 3 out of 3
+2025-05-30 18:11:18,301 - INFO - Early stopping triggered at epoch 10
+2025-05-30 18:11:45,141 - INFO - 
+Processing fold 3/5
+2025-05-30 18:14:23,533 - INFO - Fold 3, Epoch 1/15, Train Loss: 0.3287, Val Loss: 0.2429
+2025-05-30 18:17:01,875 - INFO - Fold 3, Epoch 2/15, Train Loss: 0.1691, Val Loss: 0.2120
+2025-05-30 18:19:41,658 - INFO - Fold 3, Epoch 3/15, Train Loss: 0.1548, Val Loss: 0.1813
+2025-05-30 18:22:20,307 - INFO - Fold 3, Epoch 4/15, Train Loss: 0.1372, Val Loss: 0.1690
+2025-05-30 18:24:59,035 - INFO - Fold 3, Epoch 5/15, Train Loss: 0.1218, Val Loss: 0.1799
+2025-05-30 18:24:59,035 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-30 18:27:37,455 - INFO - Fold 3, Epoch 6/15, Train Loss: 0.1103, Val Loss: 0.1799
+2025-05-30 18:27:37,456 - INFO - EarlyStopping counter: 2 out of 3
+2025-05-30 18:30:15,843 - INFO - Fold 3, Epoch 7/15, Train Loss: 0.1092, Val Loss: 0.1648
+2025-05-30 18:32:55,570 - INFO - Fold 3, Epoch 8/15, Train Loss: 0.1052, Val Loss: 0.1470
+2025-05-30 18:35:33,440 - INFO - Fold 3, Epoch 9/15, Train Loss: 0.0993, Val Loss: 0.1562
+2025-05-30 18:35:33,440 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-30 18:38:11,593 - INFO - Fold 3, Epoch 10/15, Train Loss: 0.0923, Val Loss: 0.1796
+2025-05-30 18:38:11,593 - INFO - EarlyStopping counter: 2 out of 3
+2025-05-30 18:40:49,763 - INFO - Fold 3, Epoch 11/15, Train Loss: 0.0932, Val Loss: 0.1795
+2025-05-30 18:40:49,763 - INFO - Learning rate reduced from 0.000100 to 0.000050
+2025-05-30 18:40:49,763 - INFO - EarlyStopping counter: 3 out of 3
+2025-05-30 18:40:49,763 - INFO - Early stopping triggered at epoch 11
+2025-05-30 18:41:15,872 - INFO - 
+Processing fold 4/5
+2025-05-30 18:44:03,097 - INFO - Fold 4, Epoch 1/15, Train Loss: 0.3343, Val Loss: 0.2126
+2025-05-30 18:46:52,801 - INFO - Fold 4, Epoch 2/15, Train Loss: 0.1780, Val Loss: 0.2040
+2025-05-30 18:49:41,497 - INFO - Fold 4, Epoch 3/15, Train Loss: 0.1541, Val Loss: 0.1575
+2025-05-30 18:52:31,237 - INFO - Fold 4, Epoch 4/15, Train Loss: 0.1416, Val Loss: 0.1722
+2025-05-30 18:52:31,237 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-30 18:55:20,324 - INFO - Fold 4, Epoch 5/15, Train Loss: 0.1274, Val Loss: 0.1541
+2025-05-30 18:58:09,848 - INFO - Fold 4, Epoch 6/15, Train Loss: 0.1142, Val Loss: 0.1551
+2025-05-30 18:58:09,848 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-30 19:00:59,678 - INFO - Fold 4, Epoch 7/15, Train Loss: 0.1127, Val Loss: 0.1516
+2025-05-30 19:03:49,390 - INFO - Fold 4, Epoch 8/15, Train Loss: 0.1087, Val Loss: 0.1444
+2025-05-30 19:06:38,278 - INFO - Fold 4, Epoch 9/15, Train Loss: 0.0969, Val Loss: 0.1465
+2025-05-30 19:06:38,278 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-30 19:09:28,000 - INFO - Fold 4, Epoch 10/15, Train Loss: 0.0947, Val Loss: 0.1384
+2025-05-30 19:12:18,654 - INFO - Fold 4, Epoch 11/15, Train Loss: 0.0934, Val Loss: 0.1415
+2025-05-30 19:12:18,654 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-30 19:15:08,156 - INFO - Fold 4, Epoch 12/15, Train Loss: 0.0893, Val Loss: 0.1430
+2025-05-30 19:15:08,156 - INFO - EarlyStopping counter: 2 out of 3
+2025-05-30 19:17:58,310 - INFO - Fold 4, Epoch 13/15, Train Loss: 0.0841, Val Loss: 0.1387
+2025-05-30 19:17:58,310 - INFO - Learning rate reduced from 0.000100 to 0.000050
+2025-05-30 19:17:58,311 - INFO - EarlyStopping counter: 3 out of 3
+2025-05-30 19:17:58,311 - INFO - Early stopping triggered at epoch 13
+2025-05-30 19:18:26,148 - INFO - 
+Processing fold 5/5
+2025-05-30 19:21:06,979 - INFO - Fold 5, Epoch 1/15, Train Loss: 0.3218, Val Loss: 0.2052
+2025-05-30 19:23:50,666 - INFO - Fold 5, Epoch 2/15, Train Loss: 0.1741, Val Loss: 0.2035
+2025-05-30 19:26:34,968 - INFO - Fold 5, Epoch 3/15, Train Loss: 0.1515, Val Loss: 0.1726
+2025-05-30 19:29:18,254 - INFO - Fold 5, Epoch 4/15, Train Loss: 0.1320, Val Loss: 0.2028
+2025-05-30 19:29:18,254 - INFO - EarlyStopping counter: 1 out of 3
+2025-05-30 19:32:02,884 - INFO - Fold 5, Epoch 5/15, Train Loss: 0.1211, Val Loss: 0.1861
+2025-05-30 19:32:02,884 - INFO - EarlyStopping counter: 2 out of 3
+2025-05-30 19:34:46,995 - INFO - Fold 5, Epoch 6/15, Train Loss: 0.1161, Val Loss: 0.1854
+2025-05-30 19:34:46,996 - INFO - Learning rate reduced from 0.000100 to 0.000050
+2025-05-30 19:34:46,996 - INFO - EarlyStopping counter: 3 out of 3
+2025-05-30 19:34:46,996 - INFO - Early stopping triggered at epoch 6
+2025-05-30 19:35:15,484 - INFO - Overall best model saved to /home/yan/Documents/Git/SDS-CP028-smart-leaf/submissions/team-members/yan-cotta/scripts/outputs/best_leaf_disease_model.pth
+2025-05-30 19:35:15,484 - INFO - 
+Evaluation completed successfully!
