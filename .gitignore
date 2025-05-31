@@ -77,4 +77,5 @@ submissions/team-members/*/data/
 *.pkl
 *.joblib
 *.pt
+*.keras
 
