@@ -1,0 +1,82 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Development
+.env
+.env.*
+*.sqlite
+*.db
+
+# Virtual Environment
+venv/
+venv-leaf/
+.venv/
+env/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.project
+.pydevproject
+.settings/
+*.sublime-workspace
+*.sublime-project
+
+# OS
+.DS_Store
+Thumbs.db
+*.bak
+*.tmp
+*~
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+
+# Project specific - Dataset files
+dataset/
+dataset_organized/
+split_dataset/
+temp_dataset/
+BangladeshiCrops/
+SmartLeaf_dataset/
+submissions/team-members/*/data/
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.zip
+*.tar.gz
+
+# Model files
+*.pth
+*.h5
+*.onnx
+*.pkl
+*.joblib
+*.pt
+*.pth
+*.keras
+
